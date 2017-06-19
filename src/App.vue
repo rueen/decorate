@@ -8,8 +8,8 @@
         <div class="table-row">
             <div class="table-cell lauout-content">
                 <left></left>
-                <phone></phone>
                 <right></right>
+                <phone></phone>
                 <loading v-if="loading.isShow"></loading>
             </div>
         </div>
@@ -121,8 +121,14 @@ a{
 .w100{
     width: 100%;
 }
+.h100{
+    height: 100%;
+}
 .pl10{
     padding-left: 10px;
+}
+.mr10{
+    margin-right: 10px;
 }
 .valign-m{
     vertical-align: middle;
@@ -291,5 +297,22 @@ h2.title{
     text-align: center;
     margin: 10px auto;
     cursor: pointer;
+}
+.selected-box{
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    border: 1px solid #00cc84;
+    color: rgba(255,255,255,0);
+    margin: 0 auto;
+    cursor: pointer;
+    background: #fff;
+}
+.selected-box .iconfont{
+    font-size: 12px;
+}
+.selected-box-wrap.selected .selected-box,
+.selected-box-wrap:hover .selected-box{
+    color: #fff;
+    background: #00cc84;
 }
 </style>

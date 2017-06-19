@@ -8,26 +8,30 @@
     <!-- {{list}} -->
         <div class="phone-content">
             <draggable :list="list" :options="dragOptions" class="dragArea" @end="dragEnd">
-                <div v-for="(element, index) in list" class="preview" @click="edit(index, element)">
-                    <div class="preview-hover" v-show="current.index === index">
-                        <div class="preview-move">
-                            <span class="iconfont icon-move"></span>
-                        </div>
+                <div v-for="(element, index) in list" class="preview" @click="edit($event, index, element)">
+                    <!--操作区-->
+                    <div class="preview-hover" v-show="curIndex === index">
                         <div class="preview-remove" @click="remove(index)">
                             <span class="iconfont icon-cuowu"></span>
                         </div>
-                        <div class="preview-down" v-if="index < list.length - 1" @click="moveDown(index, element)">
+                        <template v-if="element.name !== 'categoriesBar'">
+                        <div class="preview-move">
+                            <span class="iconfont icon-move"></span>
+                        </div>
+                        <div class="preview-down js-move" v-if="index < list.length - 1" @click="moveDown(index, element)">
                             <span class="iconfont icon-xiafan"></span>
                         </div>
-                        <div class="preview-up" v-if="index > 0" @click="moveUp(index, element)">
+                        <div class="preview-up js-move" v-if="index > 0" @click="moveUp(index, element)">
                             <span class="iconfont icon-shangfan"></span>
                         </div>
+                        </template>
                     </div>
+                    
                     <component :is="element.name" :data="element.data" :element="element"></component>
                 </div>
             </draggable>
-            <modal v-if="del.index !== ''" :modalOptions="del.modalOptions" @close="closeDelModal" @ok="okDelModal"></modal>
         </div>
+        <modal v-if="del.index !== ''" :modalOptions="del.modalOptions" @close="closeDelModal" @ok="okDelModal"></modal>
     </div>
 </template>
 
@@ -35,7 +39,8 @@
 import $ from 'jquery'
 import Vue from 'vue'
 import draggable from 'vuedraggable'
-import {bus, componentsPreview} from '../assets/js/bus.js'
+import {bus} from '../assets/js/bus.js'
+import {componentsPreview} from '../config.js'
 import modal from './modules/modal'
 
 var components = Object.assign({},{
@@ -43,11 +48,12 @@ var components = Object.assign({},{
     modal
 }, componentsPreview);
 
+
 export default {
     data () {
         return {
             list: bus.list,
-            current: bus.current,
+            curIndex: null,
             dragOptions: {
                 group: {
                     name: 'element',
@@ -67,19 +73,28 @@ export default {
             }
         }
     },
+    watch: {
+        list: function(){
+            this.curIndex = bus.current.index
+        }
+    },
     components: components,
-    created: function() {},
+    created: function() {
+    },
     methods: {
         dragEnd: function(evt){
             var newIndex = evt.newIndex;
-
-            bus.current.index = newIndex;
+            bus.$emit('setCurrentIndex', {index: newIndex});
+            this.curIndex = newIndex;
+           
         },
         //点击元素调出右侧编辑框
-        edit: function(index, element){
-            Vue.set(bus.current, 'edit', element)
-            Vue.set(bus.current, 'index', index)
-            this.curIndex = index;
+        edit: function(e, index, element){
+            var $tag = $(e.target);
+            if(!$tag.hasClass('js-move') && !$tag.parents().hasClass('js-move')){
+                this.curIndex = index;
+                bus.$emit('setCurrentIndex', {index: index});
+            }
         },
         //下移
         moveDown: function(index, element){
@@ -87,6 +102,9 @@ export default {
 
             list.splice(index, 1);
             list.splice(index + 1, 0, element);
+
+            this.curIndex = index + 1;
+            bus.$emit('setCurrentIndex', {index: index + 1});
         },
         //上移
         moveUp: function(index, element){
@@ -94,6 +112,9 @@ export default {
 
             list.splice(index, 1);
             list.splice(index - 1, 0, element);
+
+            this.curIndex = index - 1;
+            bus.$emit('setCurrentIndex', {index: index - 1});
         },
         //删除
         remove: function(index){
@@ -111,8 +132,7 @@ export default {
             list.splice(index, 1);
             this.del.index = '';
             //清空右侧编辑区
-            Vue.set(bus.current, 'edit', null)
-            Vue.set(bus.current, 'index', null)
+            bus.$emit('setCurrentIndex', {index: null});
         }
     }
 }
@@ -122,17 +142,18 @@ export default {
 <style scoped>
 .phone-wrap {
     width: 326px;
-    height: 620px;
+    height:650px;
     padding-top: 57px;
     position: absolute;
+    z-index: 0;
     left: 50%;
     top: 50%;
-    margin: -310px 0 0 -270px;
+    margin: -380px 0 0 -270px;
     background: url(../assets/images/phone.svg) no-repeat 0 0;
 }
 .phone-content{
     width: 320px;
-    height: 526px;
+    height: 650px;
     margin: 0 auto;
     background: #fff;
     overflow-y: auto;

@@ -7,15 +7,21 @@
     <div class="content">
         <h2 class="tit">今日上新</h2>
         <p class="tips">10点上新</p>
-        <div class="goods-list clearfix table">
-            <div class="table-cell valign-m">
-                <div class="goods-item fl" v-if="!groupDto.isError" v-for="goods in groupDto.groupGoodsList">
-                    <img :src="goods.thumbnail" alt="" class="goods-img">
-                    <div class="goods-title clamp2">{{goods.name}}</div>
-                    <div class="goods-price-box">尝鲜价：<span class="dollar">￥</span><span class="goods-price">{{goods.price}}</span></div>
+        <div class="goods-list clearfix">
+            <div class="table w100 h100" v-if="!groupDto.isError">
+                <div class="table-row">
+                    <div class="table-cell valign-m" v-for="goods in groupDto.groupGoodsList">
+                        <div class="goods-item">
+                            <img :src="goods.thumbnail" alt="" class="goods-img">
+                            <div class="goods-title clamp2">{{goods.name}}</div>
+                            <div class="goods-price-box">尝鲜价：<span class="dollar">￥</span><span class="goods-price">{{goods.price}}</span></div>
+                        </div>
+                    </div>
                 </div>
-                <div v-if="groupDto.isError">
-                    <div class="data-none">暂无商品</div>
+                <div class="table-row" v-if="groupDto.isError">
+                    <div class="table-cell valign-m text-center">
+                        <div class="data-none">暂无商品</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -26,7 +32,8 @@
 </template>
 
 <script>
-import {bus, info} from '../../../assets/js/bus.js'
+import {bus} from '../../../assets/js/bus.js'
+import {info, decoration} from '../../../config.js'
 import service from '../../../assets/js/service.js'
 
 export default {
@@ -58,7 +65,7 @@ export default {
             if(!!todays){
                 service.getGroup({
                     groupId: todays,
-                    shopId: info.shopId,
+                    shopId: decoration.shopId,
                     pageSize: 2,
                     pageNum: 1,
                     success: function(resp){

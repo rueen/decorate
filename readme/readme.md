@@ -121,10 +121,10 @@ decoration
 ## 如何开发新组件
 1、在parts下新建一个文件夹，文件夹的名称及为组件的type名，文件夹包含两个文件（edit.vue、preview.vue）;
 
-2、打开assets——js——bus.js，在文件顶部按照原有的组件格式引入edit.vue & preview.vue 文件
+2、打开config.js，在文件顶部按照原有的组件格式引入edit.vue & preview.vue 文件
 
-	import typePreview from '../../components/parts/新建组件文件名/preview'
-	import typeEdit from '../../components/parts/新建组件文件名/edit'
+	import typePreview from './components/parts/新建组件文件名/preview'
+	import typeEdit from './components/parts/新建组件文件名/edit'
 
 3、在tags数组中添加一个新对象
 

@@ -6,9 +6,17 @@
     <script>
 		var configs = configs || {};
 		var isDev = true;
-		configs.shopId = 38;
-		configs.baseUrl = 'http://store.test.seatent.com';
-		configs.data = isDev ? window.localStorage['pageData'] : '[]'
+		configs.baseUrl = 'http://mall.dev.seatent.com/shop';
+    configs.shopId = 38;
+    //签约状态
+    configs.sign_status = 1;
+    var decorations = {};
+    decorations.id = 420;
+    decorations.name = '测试';
+    decorations.shopId = 38;
+    decorations.content = isDev ? window.localStorage['pageData'] : '[]';
+    decorations.shareData = isDev ? window.localStorage['shareData'] : '{}';
+  
 	</script>
   </head>
   <body>

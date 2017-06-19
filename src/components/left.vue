@@ -9,10 +9,12 @@
             <div class="category" v-for="element in tags">
                 <h3 class="category-tit">{{element.category}}</h3>
                 <div class="tags-list clearfix">
-                    <div class="tag-box" :class="{'fl': (index % 2 == 0), 'fr': (index % 2 == 1)}" v-for="(item, index) in element.list" :type="item.type" :max="item.max" @click="click(item.type, item.max)">
-                        <draggable :options="dragOptions" class="dragArea" @end="dragEnd">
-                            <span class="btn-blue tag js-tag" :type="item.type" :max="item.max">{{item.name}}</span>
-                        </draggable>
+                    <div class="tag-box" :class="{'fl': (index % 2 == 0), 'fr': (index % 2 == 1)}" v-for="(item, index) in element.list">
+                        <div class="tag-drag-box" :type="item.type" :max="item.max" @click="click(item.type, item.max)">
+                            <draggable :options="dragOptions" class="dragArea" @end="dragEnd">
+                                <span class="btn-blue tag js-tag" :type="item.type" :max="item.max">{{item.name}}</span>
+                            </draggable>
+                        </div>
                         <div class="tipsPop" v-if="!!item.tips">
                             <span class="iconfont icon-arrow"></span>
                             {{item.tips}}
@@ -29,7 +31,8 @@
 import $ from 'jquery'
 import Vue from 'vue'
 import draggable from 'vuedraggable'
-import {tags, defaultElement, bus} from '../assets/js/bus.js'
+import {bus} from '../assets/js/bus.js'
+import {tags, defaultElement} from '../config.js'
 import tips from './modules/tips'
 
 module.exports = {
@@ -87,9 +90,8 @@ module.exports = {
                 newData = $.extend(true, {}, defaultElement[type]),
                 curIndex = this.list.length,
                 _length = 0;
-
-            Vue.set(bus.current, 'edit', newData)
-            Vue.set(bus.current, 'index', curIndex)
+                
+            bus.$emit('setCurrentIndex', {index: curIndex});
 
             $.each(this.list, function(index, json){
                 if(json.name == type){
@@ -100,12 +102,18 @@ module.exports = {
             if(!!max && _length >= max){
                 that.showTips = true
             } else {
-                if(!!index || index == 0){
-                    //拖拽插入默认数据
-                    that.list.splice(index, 0, newData)
+                if(type == 'categoriesBar'){
+                    //顶部分类
+                    that.list.unshift(newData);
+                    bus.$emit('setCurrentIndex', {index: 0});
                 } else {
-                    //新建默认数据
-                    that.list.push(newData)
+                    if(!!index || index == 0){
+                        //拖拽插入默认数据
+                        that.list.splice(index, 0, newData)
+                    } else {
+                        //新建默认数据
+                        that.list.push(newData)
+                    }
                 }
             }
         }
@@ -167,12 +175,13 @@ module.exports = {
     padding: 15px;
     opacity: 0;
     transition: all .3s;
-    z-index: 2;
+    z-index: 0;
     color: #866308;
 }
-.dragArea:hover + .tipsPop{
+.tag-drag-box:hover + .tipsPop{
     opacity: 1;
     top: 0;
+    z-index: 2;
 }
 .fl .tipsPop{
     right: -327px;
@@ -188,6 +197,7 @@ module.exports = {
     width: 320px;
     height: 50px;
     position: relative;
+    background: none;
 }
 .phone-wrap .left-placeholder:after{
     content: '放到这里';

@@ -1,10 +1,10 @@
 <template>
     <div class="countDown">
-        <span class="text">{{hour}}</span>
+        <span class="text">{{hour}}时</span>
         <span>:</span>
-        <span class="text">{{minute}}</span>
+        <span class="text">{{minute}}分</span>
         <span>:</span>
-        <span class="text">{{second}}</span>
+        <span class="text">{{second}}秒</span>
     </div>
 </template>
 <script>

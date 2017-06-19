@@ -30,5 +30,18 @@ module.exports = merge(baseWebpackConfig, {
       template: 'index.html',
       inject: true
     })
-  ]
+  ],
+  devServer: {
+		historyApiFallback: true,
+		//hot: true,
+		//inline: true,
+		compress: true,
+		//progress: true,
+		proxy: {
+			"/shop/admin/*": {
+				target: "http://mall.dev.seatent.com/shop",
+				secure: false
+			}
+		}
+  }
 })

@@ -16,7 +16,7 @@
                         <input type="text" class="form-control" v-model="item.imgsrc">
                     </div>
                     <div class="table-cell valign-m">
-                        <button class="btn btn-default" @click="openImageChoice(index)">选择图片</button>
+                        <button class="btn btn-default" @click="openImageChoice(index, item)">选择图片</button>
                     </div>
                 </div>
                 <div class="table-row">
@@ -25,7 +25,7 @@
                         <input type="text" class="form-control" v-model="item.href">
                     </div>
                     <div class="table-cell valign-m">
-                        <button class="btn btn-default" @click="openLinkChoice(index)">选择链接</button>
+                        <button class="btn btn-default" @click="openLinkChoice(index, item)">选择链接</button>
                     </div>
                 </div>
             </div>
@@ -46,14 +46,18 @@ import linkChoice from '../../modules/linkChoice'
 export default {
     name: 'singlePic',
     data () {
+        var that = this;
+
         return {
             imageChoice: {
                 showModal: false,
                 curTab: 'upload', //当前选项卡
+                selected: '',//当前选择项
             },
             linkChoice: {
                 showModal: false,
-                curTab: 'myGoods'
+                curTab: 'myGoods',
+                selected: '',//当前选择项
             },
             curIndex: '',//当前索引
             del: {
@@ -72,8 +76,9 @@ export default {
     components: { imageChoice, linkChoice, modal },
     methods: {
         //打开图片选择弹窗
-        openImageChoice: function(index){
+        openImageChoice: function(index, item){
             this.imageChoice.showModal = true;
+            this.imageChoice.selected = item.imgsrc;//设置当前选择项
             this.curIndex = index;//给当前索引赋值
         },
         //关闭图片选择弹窗
@@ -83,23 +88,24 @@ export default {
         //选择图片成功回调
         imageChoiceSuccess: function(opts){
             this.imageChoice.showModal = false;
-
-            this.data[this.curIndex].imgsrc = opts.selected;
+            this.data[this.curIndex].imgsrc = opts.src;
+            this.imageChoice.selected = opts.src;//设置当前选择项
         },
-        //打开连接选择弹窗
-        openLinkChoice: function(index){
+        //打开链接选择弹窗
+        openLinkChoice: function(index, item){
             this.linkChoice.showModal = true;
+            this.linkChoice.selected = item.href;//设置当前选择项
             this.curIndex = index;//给当前索引赋值
         },
-        //关闭连接选择弹窗
+        //关闭链接选择弹窗
         closeLinkChoicePop: function(){
             this.linkChoice.showModal = false;
         },
-        //选择连接成功回调
+        //选择链接成功回调
         linkChoiceSuccess: function(opts){
             this.linkChoice.showModal = false;
-
             this.data[this.curIndex].href = opts.link;
+            this.linkChoice.selected = opts.link;//设置当前选择项
         },
         //添加分类
         addItem: function(){

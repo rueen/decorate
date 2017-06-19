@@ -13,7 +13,8 @@
 </template>
 
 <script>
-import {bus, componentsEdit} from '../assets/js/bus.js'
+import {bus} from '../assets/js/bus.js'
+import {componentsEdit} from '../config.js'
 
 var components = Object.assign({},{}, componentsEdit);
 
@@ -24,7 +25,8 @@ export default {
         }
     },
     components: components,
-    created: function() {},
+    created: function() {
+    },
     methods: {}
 }
 </script>

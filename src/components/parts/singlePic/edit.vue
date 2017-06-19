@@ -2,7 +2,6 @@
   焦点图——编辑
   李瑞云 2016.12.01
  -->
-
  <template>
     <div>
         <h2 class="title">焦点图(自定义)</h2>
@@ -32,22 +31,30 @@
 </template>
 
 <script>
+import $ from 'jquery'
 import imageChoice from '../../modules/imageChoice'
 import linkChoice from '../../modules/linkChoice'
 
 export default {
     name: 'singlePic',
     data () {
+        var that = this;
+
         return {
             imageChoice: {
                 showModal: false,
                 curTab: 'upload', //当前选项卡
+                selected: that.data.imgsrc
             },
             linkChoice: {
                 showModal: false,
-                curTab: 'myGoods'
+                curTab: 'myGoods',
+                selected: that.data.href
             }
         }
+    },
+    watch: {
+        
     },
     props: ['data', 'element'],
     created: function(){
@@ -62,16 +69,18 @@ export default {
         //选择图片成功回调
         imageChoiceSuccess: function(opts){
             this.imageChoice.showModal = false;
-            this.data.imgsrc = opts.selected;
+            this.data.imgsrc = opts.src;
+            this.imageChoice.selected = opts.src;
         },
-        //关闭连接选择弹窗
+        //关闭链接选择弹窗
         closeLinkChoicePop: function(){
             this.linkChoice.showModal = false;
         },
-        //选择连接成功回调
+        //选择链接成功回调
         linkChoiceSuccess: function(opts){
             this.linkChoice.showModal = false;
             this.data.href = opts.link;
+            this.linkChoice.selected = opts.link;
         },
     }
 }

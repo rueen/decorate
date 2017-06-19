@@ -11,12 +11,16 @@
                 <div class="banner">
                     <img :src="item.banner" alt="" class="banner-img">
                 </div>
-                <div class="goods-list clearfix">
+                <div class="goods-list clearfix" v-if="data.subcheck">
                     <div class="goods-item" v-for="goods in item.groupGoodsList">
                         <img :src="goods.thumbnail" alt="" class="goods-img">
                         <div class="goods-title clamp2">{{goods.name}}</div>
                         <div class="goods-price-box"><span class="dollar">￥</span><span class="goods-price">{{goods.price}}</span></div>
                     </div>
+                </div>
+                <div class="recommended-info" v-if="!data.subcheck">
+                    <div class="title">{{item.name}}</div>
+                    <div class="desc">{{item.description}}</div>
                 </div>
             </div>
             <div v-if="item.isError">
@@ -28,13 +32,15 @@
 
 <script>
 import $ from 'jquery'
-import {bus, info} from '../../../assets/js/bus.js'
+import {bus} from '../../../assets/js/bus.js'
+import {decoration} from '../../../config.js'
 import service from '../../../assets/js/service.js'
 
 export default {
     data () {
         return {
-            masterrcdList: []
+            masterrcdList: [],
+            cache: {},//缓存数据，避免重复请求
         }
     },
     computed: {
@@ -58,20 +64,25 @@ export default {
                 masterrcd = this.masterrcd;
 
             $.each(masterrcd, function(index, val){
-                if(!that.masterrcdList[index] && !!val){
-                    service.getGroup({
-                        groupId: val,
-                        shopId: info.shopId,
-                        pageSize: 2,
-                        pageNum: 1,
-                        success: function(resp){
-                            if(resp.data && resp.data.groupDto){
-                                that.masterrcdList.splice(index, 1, resp.data.groupDto);
-                            } else {
-                                that.masterrcdList.splice(index, 1, {isError: true});
+                if(that.masterrcdList[index] != 'undefined' && !!val){
+                    if(that.cache[val]){
+                        that.masterrcdList.splice(index, 1, that.cache[val]);
+                    } else {
+                        service.getGroup({
+                            groupId: val,
+                            shopId: decoration.shopId,
+                            pageSize: 2,
+                            pageNum: 1,
+                            success: function(resp){
+                                if(resp.data && resp.data.groupDto){
+                                    that.masterrcdList.splice(index, 1, resp.data.groupDto);
+                                    that.cache[val] = resp.data.groupDto;
+                                } else {
+                                    that.masterrcdList.splice(index, 1, {isError: true});
+                                }
                             }
-                        }
-                    })
+                        })
+                    }
                 }
             })
         }
@@ -89,19 +100,8 @@ export default {
 .banner-img{
     width: 100%; height: auto;
 }
-.goods-item{
-    width: 50%;
-    float: left;
-    padding: 10px;
-}
-.goods-img{
-    width: 80px; height: 120px;
-    display: block;
-    margin: 0 auto;
-}
 .goods-title{
-    padding: 5px 0;
-    font-size: 12px;
+    color: #000;
 }
 .goods-price-box{
     font-size: 12px;
@@ -109,6 +109,31 @@ export default {
 .goods-price{
     font-weight: bold;
     font-size: 16px;
+}
+.goods-item{
+    width: 50%;
+    float: left;
+    padding: 10px;
+}
+.goods-item .goods-img{
+    width: 80px; height: 120px;
+    display: block;
+    margin: 0 auto;
+}
+.goods-item .goods-title{
+    padding: 5px 0;
+}
+.recommended-info{
+    padding: 10px;
+}
+.recommended-info .title{
+    color: #000;
+    padding-bottom: 5px;
+}
+.recommended-info .desc{
+    color: #666;
+    font-size: 12px;
+    line-height: 16px;
 }
 .data-none{
     text-align: center;

@@ -19,28 +19,28 @@
                             <tr>
                                 <th>商品名称</th>
                                 <th>类型</th>
-                                <th>库存</th>
-                                <th>销量</th>
+                                <!-- <th>库存</th> -->
+                                <!-- <th>销量</th> -->
                                 <th>价格</th>
                                 <th>进货时间</th>
-                                <th>排序</th>
+                                <!-- <th>排序</th> -->
                                 <th>操作</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="item in data.myGoods.data" @click="ok(item)">
+                            <tr class="selected-box-wrap" :class="{'selected': selected == linkMosaic[linkChoice.curTab] + item.id}" v-for="item in data.myGoods.data" @click="ok(item)">
                                 <td>
                                     <div class="thumbnail-box">
                                         <img :src="item.thumbnail" alt="" class="thumbnail">
-                                        <span class="fl">{{item.name}}</span>
+                                        <div class="fl goods-title clamp2">{{item.name}}</div>
                                     </div>
                                 </td>
-                                <td>{{item.type}}</td>
-                                <td></td>
-                                <td></td>
+                                <td>{{item.tradeType | tradeType-filter}}</td>
+                                <!-- <td>{{item.quantity}}</td> -->
+                                <!-- <td>{{item.saleNum}}</td> -->
                                 <td>{{item.price}}</td>
-                                <td>{{item.updatetime}}</td>
-                                <td>{{item.sortNo}}</td>
+                                <td>{{item.updatetime | timeFormat}}</td>
+                                <!-- <td>{{item.sortNo}}</td> -->
                                 <td>
                                     <div class="selected-box">
                                         <span class="iconfont icon-select"></span>
@@ -64,18 +64,18 @@
                                 <th>分组编号</th>
                                 <th>分组名称</th>
                                 <th>所属模块</th>
-                                <th>分组商品数</th>
+                                <!-- <th>分组商品数</th> -->
                                 <th>更新时间</th>
                                 <th>操作</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="item in data.group.groupList" @click="ok(item)">
+                            <tr class="selected-box-wrap" :class="{'selected': selected == linkMosaic[linkChoice.curTab] + item.id}" v-for="item in data.group.groupList" @click="ok(item)">
                                 <td>{{item.id}}</td>
                                 <td>{{item.name}}</td>
-                                <td>{{item.startTime}}</td>
-                                <td>{{item.endTime}}</td>
-                                <td>{{item.updateTime}}</td>
+                                <td>{{item.location | location—filter}}</td>
+                                <!-- <td></td> -->
+                                <td>{{item.updateTime | timeFormat}}</td>
                                 <td>
                                     <div class="selected-box">
                                         <span class="iconfont icon-select"></span>
@@ -105,12 +105,12 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="item in data.sale.activitiesList" @click="ok(item)">
+                            <tr class="selected-box-wrap" :class="{'selected': selected == linkMosaic[linkChoice.curTab] + item.id}" v-for="item in data.sale.activitiesList" @click="ok(item)">
                                 <td>{{item.id}}</td>
                                 <td>{{item.name}}</td>
-                                <td>{{item.startTime}}</td>
-                                <td>{{item.endTime}}</td>
-                                <td>{{item.status}}</td>
+                                <td>{{item.startTime | timeFormat}}</td>
+                                <td>{{item.endTime | timeFormat}}</td>
+                                <td>{{item.status | saleStatus(item.startTime, item.endTime)}}</td>
                                 <td>
                                     <div class="selected-box">
                                         <span class="iconfont icon-select"></span>
@@ -138,10 +138,10 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="item in data.decoration.decorationList" @click="ok(item)">
+                            <tr class="selected-box-wrap" :class="{'selected': selected == linkMosaic[linkChoice.curTab] + item.id}" v-for="item in data.decoration.decorationList" @click="ok(item)">
                                 <td>{{item.id}}</td>
                                 <td>{{item.name}}</td>
-                                <td>{{item.updatetime}}</td>
+                                <td>{{item.updatetime | timeFormat}}</td>
                                 <td>
                                     <div class="selected-box">
                                         <span class="iconfont icon-select"></span>
@@ -164,14 +164,16 @@
 import $ from 'jquery'
 import modal from './modal'
 import pagination from './pagination'
-import {info} from '../../assets/js/bus.js'
+import {info, decoration} from '../../config.js'
 import service from '../../assets/js/service.js'
+import filter from '../../assets/js/filter.js'
 
 export default {
     data() {
         var opts = this.modalOptions;
 
 	    return {
+            selected: opts.selected,
 	        linkChoice: {
                 showModal: false,
                 options: {
@@ -239,7 +241,7 @@ export default {
             service.linkChoice[opt.type]({
                 pageNum: opt.pageNum,
                 pageSize: opt.pageSize,
-                shopId: info.shopId,
+                shopId: opt.shopId,
                 success: function(resp){
                     var _data = resp.page ? resp : resp.data;
 
@@ -269,9 +271,10 @@ export default {
         },
         ok: function(item){
             var id = item.id,
-                link = this.linkMosaic[this.linkChoice.curTab] + id;
-
-            this.$emit('ok', {id: id, link: link})
+                name = item.name,
+                link = this.linkMosaic[this.linkChoice.curTab] + id + '/';
+                
+            this.$emit('ok', {id: id, link: link, name: name})
         }
 	},
 }
@@ -319,11 +322,11 @@ export default {
 .thumbnail{
     width: 40px; height: 40px;
     float: left;
-    margin-left: -60px;
+    margin-left: -50px;
 }
 .thumbnail-box{
-    width: 150px;
-    padding-left: 60px;
+    width: 200px;
+    padding-left: 50px;
 }
 .list-table{
     width: 100%;
@@ -335,32 +338,22 @@ export default {
     padding: 10px;
     text-align: center;
     font-weight: normal;
+    font-size: 12px;
 }
 .list-table th{
     background: #f9f9f9;
+    color: #000;
 }
 .list-table td{
     cursor: pointer;
 }
-.list-table tr:hover td{
+.selected-box-wrap:hover td{
     background: #fbfbfb;
 }
-.selected-box{
-    width: 22px; height: 22px;
-    border-radius: 50%;
-    border: 1px solid #00cc84;
-    color: #fff;
-    margin: 0 auto;
-    cursor: pointer;
+.goods-title{
+    width: 150px;
+    text-align: left;
 }
-.selected-box .iconfont{
-    font-size: 12px;
-}
-.list-table tr:hover td .selected-box{
-    color: #fff;
-    background: #00cc84;
-}
-
 </style>
 
 

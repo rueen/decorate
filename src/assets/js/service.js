@@ -3,17 +3,17 @@
 
 import $ from 'jquery'
 import common from './common.js'
-import {info} from './bus.js'
+import {info} from '../../config.js'
 
 export default {
 	//保存
 	save: function(opts){
 		var opt = $.extend({
 			url: info.baseUrl + '/goods/appSaveDecoration',
-			type: 'POST'
 		}, opts);
 
-		common.ajax(opt)
+		// common.post(opt)
+		common.post(opt)
 	},
 	//连接选择
 	linkChoice: {
@@ -53,7 +53,7 @@ export default {
 	//图片上传
 	upload: function(opts){
 		var opt = $.extend({
-			url: info.baseUrl + '/goods/appUploadShopPic',
+			url: info.baseUrl + '/admin/decoration!upload.do',
 			type: 'POST',
 		}, opts);
 
@@ -61,19 +61,32 @@ export default {
 	},
 	//获取限时特卖数据
 	getSale: function(opts){
+		var pageSize = opts.pageSize ? ('&pageSize=' + opts.pageSize) : '',
+			pageNum = opts.pageNum ? ('&pageNum=' + opts.pageNum) : '',
+			opt = $.extend({
+				url: info.baseUrl + '/activities/getActivityGoodDtoByActivityId?activityId=' + opts.activityId + '&shopId=' + opts.shopId + pageSize + pageNum,
+				type: 'GET'
+			}, opts);
+
+		common.ajax(opt)
+	},
+	//获取标签位数据
+	getTab: function(){
 		var opt = $.extend({
-			url: info.baseUrl + '/activities/getActivityGoodDtoByActivityId?activityId=' + opts.activityId + '&shopId=' + opts.shopId + '&pageSize=' + opts.pageSize + '&pageNum=' + opts.pageNum,
-			type: 'GET'
+			url: info.baseUrl + '/admin/decoration!upload.do',
+			type: 'POST',
 		}, opts);
 
 		common.ajax(opt)
 	},
 	//获取分组列表信息
 	getGroup: function(opts){
-		var opt = $.extend({
-			url: info.baseUrl + '/goods/getGroupGoodDtoById?groupId=' + opts.groupId + '&shopId=' + opts.shopId + '&pageSize=' + opts.pageSize + '&pageNum=' + opts.pageNum,
-			type: 'GET'
-		}, opts);
+		var pageSize = opts.pageSize ? ('&pageSize=' + opts.pageSize) : '',
+			pageNum = opts.pageNum ? ('&pageNum=' + opts.pageNum) : '',
+			opt = $.extend({
+				url: info.baseUrl + '/goods/getGroupGoodDtoById?groupId=' + opts.groupId + '&shopId=' + opts.shopId + pageSize + pageNum,
+				type: 'GET'
+			}, opts);
 
 		common.ajax(opt)
 	}

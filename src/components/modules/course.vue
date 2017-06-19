@@ -12,7 +12,7 @@
             </div>
             <div class="course-step course-step3">
                 <span class="arrow iconfont icon-arrow-top"></span>
-                <span class="num">3</span>点击保存，完成首页更新
+                <span class="num">3</span>点击发布，完成首页更新
                 <div class="clearfix">
                     <div class="fr btn btn-orange btn-course-close" @click="close">
                         我知道了

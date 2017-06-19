@@ -37,13 +37,17 @@
             </div> -->
             <div class="content fr popUp-upload-content" v-show="imageChoice.curTab == 'upload'">
                 <div class="content-wrap">
-                    <span class="add" v-if="userImages.all.length == 0">+
+                    <div class="add" v-if="userImages.all.length == 0">
+                        <span class="iconfont icon-upload"></span>
                         <input type="file" class="upload-btn" name="crop-up-img" accept="image/jpg,image/jpeg,image/png,image/gif" pictype="30010003" @change="upload">
-                    </span>
+                    </div>
                     <div class="wrap" v-if="userImages.all.length > 0">
                         <div class="list clearfix">
-                            <div class="item" v-for="item in userImages.cur" @click="ok(item)">
+                            <div class="img-item selected-box-wrap" :class="{'selected': selected == item}" v-for="item in userImages.cur" @click="ok(item)">
                                 <img :src="item" alt="" class="thumbnail">
+                                <div class="selected-box">
+                                    <span class="iconfont icon-select"></span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -61,7 +65,7 @@
 import $ from 'jquery'
 import modal from './modal'
 import localStorage from '../../assets/js/localStorage.js'
-import {info} from '../../assets/js/bus.js'
+import {info} from '../../config.js'
 import service from '../../assets/js/service.js'
 import pagination from './pagination'
 
@@ -76,6 +80,7 @@ export default {
         var opts = this.modalOptions;
 
 	    return {
+            selected: opts.selected,
 	        imageChoice: {
                 options: {
                     title: '选择图片',
@@ -96,8 +101,21 @@ export default {
     computed: {
 
     },
-    created: function(){
+    watch: {
+        'userImages.all': {
+            handler: function(val){
+                var images = val,
+                    cur = images.length >= pageSize ? images.slice(0, pageSize) : images,
+                    count = Math.ceil(images.length / pageSize);
 
+                this.userImages.cur = cur;//重置当前页数据列表
+                this.userImages.count = count;//重置页码
+            },
+            deep:true
+        }
+    },
+    created: function(){
+        
     },
 	components: {
         modal, pagination
@@ -130,10 +148,11 @@ export default {
                     alert('单张图片大小不能超过200k,请压缩后重新上传');
                     return false;
                 }else{
-                    formData.append('crop-up-img', files[0]);
+                    formData.append('file', files[0]);
+                    formData.append('filedataFileName', files[0].src);
                 }
             }
-
+            
             service.upload({
                 cache: false,
                 data: formData,
@@ -144,11 +163,6 @@ export default {
                     if(!!resp.data){
                         $.each(resp.data, function(index, url){
                             that.userImages.all.unshift(url);
-
-                            if(that.userImages.pageNum == 1){
-                                that.userImages.cur.pop();//删除最后一项
-                                that.userImages.cur.unshift(url);//添加
-                            }
                         })
                         //更新本地缓存
                         localStorage.set('userImages', that.userImages.all)
@@ -160,7 +174,7 @@ export default {
             this.$emit('close')
         },
         ok: function(src){
-            this.$emit('ok', {selected: src})
+            this.$emit('ok', {src: src})
         }
 	},
 }
@@ -208,14 +222,12 @@ export default {
     height: 100%;
 }
 .popUp-upload-content .add{
-    font-size: 100px;
-    color: #ddd;
     display: inline-block;
     width: 100px; height: 100px;
     position: absolute;
     left: 50%; top: 50%;
     margin: -50px 0 0 -50px;
-    border: 1px solid #f5f5f5;
+    border: 1px solid #eee;
     text-align: center;
     line-height: 100px;
     cursor: pointer;
@@ -223,6 +235,13 @@ export default {
 }
 .popUp-upload-content .add:hover{
     border-color: #ddd;
+}
+.popUp-upload-content .icon-upload{
+    color: #eee;
+    font-size: 40px;
+}
+.popUp-upload-content .add:hover .icon-upload{
+    color: #ddd;
 }
 .upload-btn{
     width: 100%; height: 100%;
@@ -238,7 +257,7 @@ export default {
     width: 620px;
     margin-right: -10px;
 }
-.item{
+.img-item{
     width: 300px; height: 120px;
     float: left;
     margin: 0 10px 10px 0;
@@ -246,16 +265,22 @@ export default {
     border: 1px solid #f5f5f5;
     box-shadow: 1px 1px 0 #f5f5f5;
     cursor: pointer;
+    padding: 5px;
 }
 .thumbnail{
     width: 100%; height: 100%;
 }
-.item:hover{
-    border-color: #66afe9;
-}
 .content-wrap{
     height: 420px;
     overflow-y: auto;
+}
+.selected-box-wrap{
+    position: relative;
+}
+.selected-box{
+    position: absolute;
+    right: 5px; top: 5px;
+    text-align: center;
 }
 /* 图片选择弹窗 E */
 </style>

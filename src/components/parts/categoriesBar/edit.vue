@@ -23,7 +23,7 @@
                             <input type="text" class="form-control" v-model="item.href">
                         </div>
                         <div class="table-cell valign-m">
-                            <button class="btn btn-default" @click="openLinkChoice(index)">选择链接</button>
+                            <button class="btn btn-default" @click="openLinkChoice(index, item)">选择链接</button>
                         </div>
                     </div>
                 </div>
@@ -46,7 +46,8 @@ export default {
         return {
             linkChoice: {
                 showModal: false,
-                curTab: 'myGoods'
+                curTab: 'myGoods',
+                selected: '',//当前选择项
             },
             curIndex: '',//当前索引
             del: {
@@ -64,20 +65,21 @@ export default {
     },
     components: { modal, linkChoice },
     methods: {
-        //打开连接选择弹窗
-        openLinkChoice: function(index){
+        //打开链接选择弹窗
+        openLinkChoice: function(index, item){
             this.linkChoice.showModal = true;
+            this.linkChoice.selected = item.href;//设置当前选择项
             this.curIndex = index;//给当前索引赋值
         },
-        //关闭连接选择弹窗
+        //关闭链接选择弹窗
         closeLinkChoicePop: function(){
             this.linkChoice.showModal = false;
         },
-        //选择连接成功回调
+        //选择链接成功回调
         linkChoiceSuccess: function(opts){
             this.linkChoice.showModal = false;
-
             this.data[this.curIndex].href = opts.link;
+            this.linkChoice.selected = opts.link;//设置当前选择项
         },
         //添加分类
         addItem: function(){

@@ -165,6 +165,9 @@ export default {
     top: 10px;
     margin-top: 0;
 }
+.modal-container.saveModal{
+    width: 500px;
+}
 </style>
 
 

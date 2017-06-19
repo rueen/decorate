@@ -8,12 +8,18 @@
         <h2 class="title">今日上新</h2>
         <div class="table w100 pl10">
             <div class="table-row">
+                <div class="table-cell valign-m cell-left">分组名称:</div>
+                <div class="table-cell valign-m">
+                    {{element.linkName}}
+                </div>
+            </div>
+            <div class="table-row">
                 <div class="table-cell valign-m cell-left">上新ID:</div>
                 <div class="table-cell valign-m">
                     <input type="text" class="form-control" v-model="data.todays">
                 </div>
                 <div class="table-cell valign-m">
-                    <button class="btn btn-default" @click="openLinkChoice">选择上新ID</button>
+                    <button class="btn btn-default" @click="openLinkChoice">选择上新分组</button>
                 </div>
             </div>
         </div>
@@ -27,6 +33,8 @@ import linkChoice from '../../modules/linkChoice'
 
 export default {
     data () {
+        var that = this;
+
         return {
             linkChoice: {
                 showModal: false,
@@ -34,7 +42,8 @@ export default {
                 tabs: [{
                     name: 'group',
                     text: '分组列表'
-                }]
+                }],
+                selected: '#/groups/show/' + that.data.todays,//当前选择项
             }
         }
     },
@@ -44,19 +53,20 @@ export default {
     },
     components: { linkChoice },
     methods: {
-        //打开连接选择弹窗
+        //打开链接选择弹窗
         openLinkChoice: function(){
             this.linkChoice.showModal = true;
         },
-        //关闭连接选择弹窗
+        //关闭链接选择弹窗
         closeLinkChoicePop: function(){
             this.linkChoice.showModal = false;
         },
-        //选择连接成功回调
+        //选择链接成功回调
         linkChoiceSuccess: function(opts){
             this.linkChoice.showModal = false;
-
             this.data.todays = opts.id;
+            this.element.linkName = opts.name;
+            this.linkChoice.selected = opts.link;//设置当前选择项
         }
     }
 }
@@ -64,6 +74,6 @@ export default {
 
 <style scoped>
 .cell-left{
-    width: 60px;
+    width: 70px;
 }
 </style>

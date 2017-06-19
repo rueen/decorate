@@ -7,18 +7,21 @@
 <div class="preview-tuan">
     <div class="tab">
         <div class="table">
-            <div class="table-cell cur">
-                <p>10:00</p>
-                <p class="tip">抢购中</p>
+            <div class="table-cell" :class="{'cur': index == 'gp1'}" v-for="(item, index) in data">
+                <p v-if="index == 'gp1'">10:00</p>
+                <p v-if="index == 'gp2'">14:00</p>
+                <p v-if="index == 'gp3'">20:00</p>
+                <p class="tip" v-if="index == 'gp1'">抢购中</p>
+                <p class="tip" v-if="index == 'gp2' || index == 'gp3'">即将开始</p>
             </div>
-            <div class="table-cell">
+            <!-- <div class="table-cell">
                 <p>14:00</p>
                 <p>即将开始</p>
             </div>
             <div class="table-cell">
                 <p>20:00</p>
                 <p>即将开始</p>
-            </div>
+            </div> -->
         </div>
     </div>
     <div class="content">
@@ -30,7 +33,7 @@
             <div class="goods-list">
                 <div class="goods-item" v-for="goods in activityGoodsListDto.activityGoodsList">
                     <div class="goods-thumbnail-box">
-                        <img :src="goods.thumbnail" alt="" class="goods-img">
+                        <img :src="goods.activityPhoto" alt="" class="goods-img">
                         <img class="goods-thumbnail-tag" src="../../../assets/images/qg_red.png" alt="抢购中">
                     </div>
                     <div class="goods-title clamp1">{{goods.name}}</div>
@@ -46,7 +49,8 @@
 </template>
 
 <script>
-import {bus, info} from '../../../assets/js/bus.js'
+import {bus} from '../../../assets/js/bus.js'
+import {info, decoration} from '../../../config.js'
 import service from '../../../assets/js/service.js'
 import countDown from '../../modules/countDown'
 
@@ -80,8 +84,8 @@ export default {
             if(!!gp1){
                 service.getSale({
                     activityId: gp1,
-                    shopId: info.shopId,
-                    pageSize: 2,
+                    shopId: decoration.shopId,
+                    // pageSize: 2,
                     pageNum: 1,
                     success: function(resp){
                         if(resp.data && resp.data.activityGoodsListDto){
@@ -151,16 +155,18 @@ export default {
 }
 .goods-thumbnail-box{
     position: relative;
+    height: 120px;
+    background: #f7f7f7;
 }
 .goods-thumbnail-tag{
     position: absolute;
     right: 5px;
-    bottom: -22px;
+    bottom: -12px;
     width: 40px; height: 40px;
 }
 .goods-img{
     display: block;
-    width: 80px; height: 120px;
+    width: 100%; height: auto;
     margin: 0 auto;
 }
 .goods-item .tag{
