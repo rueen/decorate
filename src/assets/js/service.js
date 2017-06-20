@@ -53,7 +53,8 @@ export default {
 	//图片上传
 	upload: function(opts){
 		var opt = $.extend({
-			url: info.baseUrl + '/admin/decoration!upload.do',
+			url: info.baseUrl + '/shop/admin/decoration!upload.do',
+			// url:"http://depot.dev.seatent.com/api/depot/goods!upload.do",
 			type: 'POST',
 		}, opts);
 
@@ -73,7 +74,16 @@ export default {
 	//获取标签位数据
 	getTab: function(){
 		var opt = $.extend({
-			url: info.baseUrl + '/admin/decoration!upload.do',
+			url: info.baseUrl + '/shop/admin/tag!listJson.do?page=1&rows=10',
+			type: 'POST',
+		}, opts);
+
+		common.ajax(opt)
+	},
+	//获取广告位数据
+	getDev:function(){
+		var opt = $.extend({
+			url: info.baseUrl + '/core/admin/adColumn!listJson.do?page=1&rows=10',
 			type: 'POST',
 		}, opts);
 

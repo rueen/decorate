@@ -200,9 +200,9 @@ var defaultElement = {
         name:"doubleRow",
         data:{
             title:"主会场, 四大通奶粉",
-            bgImage: '',
-            borderImg:"",
-            titleBj:"",
+            bgImage: '', //背景图片
+            borderImg:"", //边框图片
+            titleBj:"", //标题图片
             bgColor: '#f8bf00',
             titleColor: '#fff',
             priceColor:'red',

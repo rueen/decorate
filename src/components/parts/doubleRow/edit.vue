@@ -38,7 +38,7 @@
                     <input type="text" class="form-control" v-model="data.bgImage">
                 </td>
                 <td class="valign-m">
-                    <button class="btn btn-default" @click="imageChoice.showModal = true">背景图片</button>
+                    <button class="btn btn-default" @click="popup('bgImage')">背景图片</button>
                 </td>
                 
             </tr>
@@ -55,7 +55,7 @@
                     <input type="text" class="form-control" v-model="data.title">
                 </td>
                 <td class="valign-m">
-                    <button class="btn btn-default" @click="imageChoice.showModal = true">标题图片</button>
+                    <button class="btn btn-default" @click="popup('titleBj')">标题图片</button>
                 </td>
             </tr>
             
@@ -70,10 +70,10 @@
                 </td>
                 
                 <td class="valign-m">
-                    <input type="text" class="form-control" v-model="data.bgImage">
+                    <input type="text" class="form-control" v-model="data.borderImg">
                 </td>
                 <td class="valign-m">
-                    <button class="btn btn-default" @click="imageChoice.showModal = true">边框图片</button>
+                    <button class="btn btn-default" @click="popup('borderImg')">边框图片</button>
                 </td>
             </tr>
             <tr>
@@ -102,6 +102,7 @@ export default {
     data () {
         var that = this;
         return {
+            name:"",
             imageChoice: {
                 showModal: false,
                 curTab: 'upload', //当前选项卡
@@ -164,6 +165,11 @@ export default {
         }
     },
     methods: {
+        //换取弹窗
+        popup(name){
+            this.name = name 
+            this.imageChoice.showModal = true
+        },
         //关闭图片选择弹窗
         closeImageChoicePop: function(){
             this.imageChoice.showModal = false;
@@ -171,7 +177,8 @@ export default {
         //选择图片成功回调
         imageChoiceSuccess: function(opts){
             this.imageChoice.showModal = false;
-            this.data.bgImage = opts.src;
+            this.data[this.name] = opts.src
+            console.log(this.name)
             this.imageChoice.selected = opts.src;
         },
         //打开链接选择弹窗

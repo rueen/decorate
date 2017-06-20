@@ -142,7 +142,7 @@ export default {
 <style scoped>
 .phone-wrap {
     width: 326px;
-    height:650px;
+    height:500px;
     padding-top: 57px;
     position: absolute;
     z-index: 0;
@@ -153,7 +153,7 @@ export default {
 }
 .phone-content{
     width: 320px;
-    height: 650px;
+    height: 500px;
     margin: 0 auto;
     background: #fff;
     overflow-y: auto;

@@ -115,7 +115,7 @@ export default {
         }
     },
     created: function(){
-        
+        console.log(this.userImages)
     },
 	components: {
         modal, pagination
@@ -141,6 +141,7 @@ export default {
             var that = this,
                 files = e.target.files,
                 formData = new FormData(),
+                event = e,
                 i = files.length;
 
             while (i--) {
@@ -149,7 +150,9 @@ export default {
                     return false;
                 }else{
                     formData.append('file', files[0]);
-                    formData.append('filedataFileName', files[0].src);
+                    formData.append('filedataFileName', event.target.value);
+                    // formData.append('filedata', files[0]);
+                    // formData.append('filedataFileName', 'a')
                 }
             }
             
@@ -160,9 +163,13 @@ export default {
                 processData: false,
                 contentType: false,
                 success: function(resp){
+                    // that.userImages.all = []
                     if(!!resp.data){
                         $.each(resp.data, function(index, url){
-                            that.userImages.all.unshift(url);
+                            if(url.indexOf('http') > -1){
+                                that.userImages.all.unshift(url);
+                            }
+                            
                         })
                         //更新本地缓存
                         localStorage.set('userImages', that.userImages.all)

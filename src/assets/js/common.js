@@ -26,6 +26,7 @@ export default {
                 // console.log(resp)
             },
             success: function(resp){
+                console.log(resp)
                 var _resp = (typeof resp == 'string') ? $.parseJSON(resp) : resp;
                 
                 if(typeof _resp.result != 'undefined' && _resp.result != 1){

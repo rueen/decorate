@@ -4,11 +4,11 @@
  -->
 
 <template>
-    <div class="doubleTab" :style="{'background': data.bgColor}">
+    <div class="doubleTab" :style="{'background-color': data.bgColor, 'background-image':'url('+data.bgImage+')'}" >
         <div class="list">
             <h2 :style="{'color':data.titleColor, 'background-image': 'url(' + data.titleBj + ')'}">{{data.title}}</h2>
             <ul>
-                <li v-for="items of data.list" :style="{'border-color':data.borderColor, 'background-image': 'url(' + data.borderImg + ')'}">
+                <li v-for="items of data.list" :style="{'border-color':data.borderColor, 'border-image': 'url(' + data.borderImg + ') 15 15 stretch'}">
                     <div class="tip-img">
                         <img :src="items.img" alt="">
                     </div>
@@ -41,6 +41,7 @@ export default {
     },
     props: ['data', 'element'],
     created(){
+        console.log(this.data)
     },
     methods: {
     }
@@ -51,6 +52,9 @@ export default {
 .doubleTab {
     background-color:rgba(248,191,0,1);
     padding:0 13px;
+    background-repeat:no-repeat;
+    background-size:100% auto;
+    background-position:center top;
 }
 
 .doubleTab .list {
@@ -88,6 +92,7 @@ export default {
     position:relative;
     border-width:1px;
     border-style: solid;
+    border:15px solid transparent;  
 }
 
 .doubleTab .list ul li .sell_out {
