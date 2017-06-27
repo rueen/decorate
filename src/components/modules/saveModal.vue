@@ -13,26 +13,9 @@
                     <input type="text" class="form-control" placeholder="请填写页面名称" v-model="saveOptions.pageName">
                 </div>
             </div>
-            <div class="table-row">
-                <div class="table-cell cell-left">分享标题</div>
-                <div class="table-cell">
-                    <input type="text" class="form-control" placeholder="请填写分享标题" v-model="saveOptions.shareData.title">
-                </div>
-            </div>
-            <div class="table-row">
-                <div class="table-cell cell-left">分享描述</div>
-                <div class="table-cell">
-                    <input type="text" class="form-control" placeholder="请填写分享描述" v-model="saveOptions.shareData.desc">
-                </div>
-            </div>
-            <div class="table-row">
-                <div class="table-cell cell-left">分享图标</div>
-                <div class="table-cell">
-                    <input type="text" class="form-control" placeholder="http://" v-model="saveOptions.shareData.icon">
-                </div>
-            </div>
         </div>
-        <p>发布后将覆盖原数据，是否发布？</p>
+        <p v-if="saveState">编辑后将覆盖原数据，是否发布？</p>
+        <p v-else>发布后将覆盖原数据，是否发布？</p>
     </div>
 </modal>
 </template>
@@ -49,7 +32,7 @@ export default {
             },
         }
 	},
-    props: [ 'saveOptions' ],
+    props: [ 'saveOptions', 'saveState' ],
     components: { modal },
     created: function(){
     	
@@ -63,7 +46,7 @@ export default {
         },
         //点击确定按钮
         ok: function(){
-            this.$emit('ok', {pageName: this.saveOptions.pageName, shareData: this.saveOptions.shareData})
+            this.$emit('ok', this.saveOptions )
         }
 	},
 }

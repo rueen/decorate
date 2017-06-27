@@ -8,15 +8,23 @@
         <div class="list">
             <h2 :style="{'color':data.titleColor, 'background-image': 'url(' + data.titleBj + ')'}">{{data.title}}</h2>
             <ul>
-                <li v-for="items of data.list" :style="{'border-color':data.borderColor, 'border-image': 'url(' + data.borderImg + ') 15 15 stretch'}">
+                <li v-for="items of groupDto" :style="{'border-color':data.borderColor}" v-if="data.type == 0">
                     <div class="tip-img">
-                        <img :src="items.img" alt="">
+                        <img :src="items.small" alt="">
                     </div>
-                    <p>{{ items.title }} </p>
+                    <p>{{ items.name }} </p>
                     <div class="money-btn">
-                        <div class="money" :style="{'color':data.priceColor}">￥<span >{{ items.discount}}</span><i>￥{{items.price}}</i></div>
+                        <div class="money" :style="{'color':data.priceColor}">￥<span >{{ items.price}}</span><i>￥{{items.originPrice}}</i></div>
                     </div>
-                    
+                </li>
+                <li v-for="items of groupDto" :style="{'border-color':data.borderColor}" v-else>
+                    <div class="tip-img">
+                        <img :src="items.atturl" alt="">
+                    </div>
+                    <p>{{ items.aname }} </p>
+                    <div class="money-btn">
+                        <div class="money" :style="{'color':data.priceColor}">￥<span >{{ items.contact}}</span><i>￥{{items.linkman}}</i></div>
+                    </div>
                 </li>
             </ul>
         </div>
@@ -36,14 +44,38 @@ export default {
     },
     computed: {
         id: function(){
-            return this.data.id
+            return this.data.goodId
+        }
+    },
+    watch:{
+        id:function(id){
+            this.getData()
         }
     },
     props: ['data', 'element'],
     created(){
-        console.log(this.data)
+        this.getData()
+        console.log(this.data.goodId)
     },
     methods: {
+        getData(){
+            
+            var type = "",
+                self  = this,
+                id  = this.id;
+            if(!id) return 
+
+            type  = this.data.type == 0 ? "getTab" : "getDev"
+
+            service.linkChoice[type+"Details"]({
+                "goodId" : id,
+                success : function(resp){
+                    console.log(resp)
+                    self.groupDto = resp.rows
+
+                }
+            })
+        }
     }
 }
 </script>
@@ -92,7 +124,6 @@ export default {
     position:relative;
     border-width:1px;
     border-style: solid;
-    border:15px solid transparent;  
 }
 
 .doubleTab .list ul li .sell_out {

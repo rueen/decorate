@@ -145,14 +145,12 @@ export default {
                 i = files.length;
 
             while (i--) {
-                if (files[i].size > 200 * 1024) {
-                    alert('单张图片大小不能超过200k,请压缩后重新上传');
+                if (files[i].size > ( 1024 * 1024  * 1)) {
+                    alert('单张图片大小不能超过1024k(1M),请压缩后重新上传');
                     return false;
                 }else{
                     formData.append('file', files[0]);
                     formData.append('filedataFileName', event.target.value);
-                    // formData.append('filedata', files[0]);
-                    // formData.append('filedataFileName', 'a')
                 }
             }
             
@@ -174,6 +172,9 @@ export default {
                         //更新本地缓存
                         localStorage.set('userImages', that.userImages.all)
                     }
+                },
+                fail:function(resp){
+                    alert(resp.message)
                 }
             })
         },

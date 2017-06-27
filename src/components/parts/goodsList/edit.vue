@@ -188,7 +188,6 @@ export default {
         },
         //选择颜色
         colorPickeronChange: function(type, val){
-            console.log(123)
             this.data[type] = val.hex
         }
     }
@@ -222,7 +221,7 @@ td{
     line-height: 30px;
     position: absolute;
     bottom: -230px; right: -195px;
-    z-index: 2;
+    z-index: 95;
     cursor: pointer;
 }
 .closeColorPicker:hover{
@@ -243,7 +242,7 @@ td{
 .color-picker{
     position: absolute;
     top: 30px; left: 0;
-    z-index: 1;
+    z-index: 90;
 }
 .tips{
     color: #999;

@@ -15,7 +15,7 @@
                     <button class="btn btn-default" @click="imageChoice.showModal = true">选择图片</button>
                 </div>
             </div>
-            <div class="table-row">
+           <!--<div class="table-row">
                 <div class="table-cell valign-m cell-left">跳转链接:</div>
                 <div class="table-cell valign-m">
                     <input type="text" v-model="data.href" class="form-control">
@@ -23,7 +23,7 @@
                 <div class="table-cell valign-m">
                     <button class="btn btn-default" @click="linkChoice.showModal = true">选择链接</button>
                 </div>
-            </div>
+            </div>-->
         </div>
         <image-choice v-if="imageChoice.showModal" :modalOptions="imageChoice" @close="closeImageChoicePop" @ok="imageChoiceSuccess"></image-choice> 
         <link-choice v-if="linkChoice.showModal" :modalOptions="linkChoice" @close="closeLinkChoicePop" @ok="linkChoiceSuccess"></link-choice>

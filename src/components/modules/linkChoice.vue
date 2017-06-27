@@ -156,17 +156,83 @@
                 :count="data.decoration.page.pageCount"
                 @goPage="goPage"></pagination>
             </div>
+            <!--商品标签列表--> 
+            <div class="content fr getTab" v-show="linkChoice.curTab == 'getTab'">
+                <div class="content-wrap">
+                    <table class="list-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>名称</th>
+                                <th>类型</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="selected-box-wrap" v-for="item in data.getTab" @click="ok(item)">
+                                <td>{{item.tag_id}}</td>
+                                <td>{{item.tag_name}}</td>
+                                <td>{{ item.tag_type_str }}</td>
+                                <td>
+                                    <div class="selected-box">
+                                        <span class="iconfont icon-select"></span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <pagination 
+                :pageNum="page"
+                :count="count"
+                @goPage="goPage"></pagination>
+            </div>
+            <!--广告位列表-->
+            <div class="content fr" v-show="linkChoice.curTab == 'getDev'">
+                <div class="content-wrap">
+                    <table class="list-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>名称</th>
+                                <th>类型</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="selected-box-wrap" :class="{'selected': selected == linkMosaic[linkChoice.curTab] + item.id}" v-for="item in data.getDev" @click="ok(item)">
+                                <td>{{item.acid}}</td>
+                                <td>{{item.cname}}</td>
+                                <td>{{item.atype | setType}}</td>
+                                <td>
+                                    <div class="selected-box">
+                                        <span class="iconfont icon-select"></span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <pagination 
+                :pageNum="page"
+                :count="count"
+                @goPage="goPage"></pagination>
+            </div>
         </div>
     </modal>
 </template>
 
 <script>
+import Vue from "vue"
 import $ from 'jquery'
 import modal from './modal'
 import pagination from './pagination'
 import {info, decoration} from '../../config.js'
 import service from '../../assets/js/service.js'
 import filter from '../../assets/js/filter.js'
+Vue.filter('setType',function(value){
+    return value == '0' ? '图片' : 'flash'
+})
 
 export default {
     data() {
@@ -174,6 +240,9 @@ export default {
 
 	    return {
             selected: opts.selected,
+            pageNum:10,
+            page:1,
+            count:"",
 	        linkChoice: {
                 showModal: false,
                 options: {
@@ -196,6 +265,14 @@ export default {
                 {
                     name: 'decoration',
                     text: '装修页面列表'
+                },
+                {
+                    name: 'getTab',
+                    text: '商品标签列表'
+                },
+                {
+                    name: 'getDev',
+                    text: '广告推荐列表'
                 }],
                 curTab: opts.curTab || 'myGoods'
             },
@@ -203,7 +280,10 @@ export default {
                 myGoods: {},
                 group: {},
                 sale: {},
-                decoration: {}
+                decoration: {},
+                tabList:{},
+                getTab:[],
+                getDev:[]
             },
             pageSize: {
                 myGoods: 6
@@ -229,6 +309,7 @@ export default {
 	methods: {
         //渲染列表
         renderList: function(opts){
+            var opts = opts || {};
             var that = this,
                 type = that.linkChoice.curTab,
                 opt = $.extend({}, {
@@ -237,20 +318,23 @@ export default {
                     shopId: info.shopId,
                     pageSize: that.pageSize[type] || 10
                 }, opts)
-
+            
             service.linkChoice[opt.type]({
                 pageNum: opt.pageNum,
                 pageSize: opt.pageSize,
-                shopId: opt.shopId,
+                // shopId: opt.shopId,
                 success: function(resp){
-                    var _data = resp.page ? resp : resp.data;
-
-                    that.data[opt.type] = _data;
+                    // var _data = resp.page ? resp : resp.rows;
+                    that.data[opt.type] = resp.rows
+                    that.count = Math.ceil(resp.total/10)
+                    // that.data[opt.type] = _data;
                 },
             })
         },
         //分页点击
         goPage: function(opt){
+            console.log(opt)
+            this.page = opt.pageNum
             this.renderList({
                 pageNum: opt.pageNum
             })
@@ -270,11 +354,12 @@ export default {
             this.$emit('close')
         },
         ok: function(item){
-            var id = item.id,
-                name = item.name,
-                link = this.linkMosaic[this.linkChoice.curTab] + id + '/';
+            // var id = item.id,
+            //     name = item.name,
+            //     link = this.linkMosaic[this.linkChoice.curTab] + id + '/';
+            item.type = this.linkChoice.curTab
                 
-            this.$emit('ok', {id: id, link: link, name: name})
+            this.$emit('ok', item)
         }
 	},
 }

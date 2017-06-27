@@ -19,7 +19,7 @@
                         <button class="btn btn-default" @click="openImageChoice(index, item)">选择图片</button>
                     </div>
                 </div>
-                <div class="table-row">
+               <!-- <div class="table-row">
                     <div class="table-cell valign-m cell-left">跳转链接:</div>
                     <div class="table-cell valign-m">
                         <input type="text" class="form-control" v-model="item.href">
@@ -27,7 +27,7 @@
                     <div class="table-cell valign-m">
                         <button class="btn btn-default" @click="openLinkChoice(index, item)">选择链接</button>
                     </div>
-                </div>
+                </div>-->
             </div>
         </div>
         <div class="btn-add btn-blue" @click="addItem" v-if="data.length < 6">添加轮播图({{data.length}}/6)</div>

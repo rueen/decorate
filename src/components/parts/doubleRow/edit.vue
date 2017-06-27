@@ -8,21 +8,12 @@
         <h2 class="title">双列</h2>
         <table class="table w100 pl10">
             <tr>
-                <td class="valign-m cell-left">类型:</td>
-                <td colspan="3" class="valign-m ">
-                    <div class="radioCont">
-                        <input type="radio"  value="0" v-model="data.type" id="tab"><label for="tab">标签</label>
-                        <input type="radio"  value="1" v-model="data.type" id="advertising"><label for="advertising">广告位</label>
-                    </div>
-                </td>
-            </tr>
-            <tr>
                 <td class="valign-m cell-left">ID:</td>
                 <td colspan="2" class="valign-m">
                     <input type="text" class="form-control" v-model="data.goodId">
                 </td>
                 <td class="valign-m">
-                    <button class="btn btn-default" >获取数据</button>
+                    <button class="btn btn-default" @click="openLinkChoice">选择分组</button>
                 </td>
             </tr>
             <tr>
@@ -68,13 +59,6 @@
                         <color-picker class="color-picker" v-model="borderColorPicker" @input="colorPickeronChange('borderColor', $event)" v-show="showborderColorPicker"></color-picker>
                     </div>
                 </td>
-                
-                <td class="valign-m">
-                    <input type="text" class="form-control" v-model="data.borderImg">
-                </td>
-                <td class="valign-m">
-                    <button class="btn btn-default" @click="popup('borderImg')">边框图片</button>
-                </td>
             </tr>
             <tr>
                 <td class="valign-m cell-left">价格颜色:</td>
@@ -96,6 +80,7 @@
 import Vue from 'vue'
 import imageChoice from '../../modules/imageChoice'
 import linkChoice from '../../modules/linkChoice'
+import service from '../../../assets/js/service.js'
 import { Chrome } from 'vue-color'
 
 export default {
@@ -110,11 +95,17 @@ export default {
             },
             linkChoice: {
                 showModal: false,
-                curTab: 'group',
-                tabs: [{
-                    name: 'group',
-                    text: '分组列表'
-                }],
+                curTab: 'getTab',
+                tabs: [
+                    {
+                        name: 'getTab',
+                        text: '商品标签'
+                    },
+                    {
+                        name: 'getDev',
+                        text: '广告位'
+                    }
+                ],
                 selected: '#/groups/show/' + that.data.id,//当前选择项
             },
             showbgColorPicker: false,
@@ -137,7 +128,7 @@ export default {
     },
     props: ['data', 'element'],
     created: function(){
-        
+
     },
     components: { 
         imageChoice,
@@ -156,12 +147,6 @@ export default {
                 this.imageChoice.selected = val;
             },
             deep: true
-        },
-        'data.type':{
-            handler: function(val){
-                this.data.type = val;
-            },
-            deep: true
         }
     },
     methods: {
@@ -178,7 +163,6 @@ export default {
         imageChoiceSuccess: function(opts){
             this.imageChoice.showModal = false;
             this.data[this.name] = opts.src
-            console.log(this.name)
             this.imageChoice.selected = opts.src;
         },
         //打开链接选择弹窗
@@ -191,8 +175,18 @@ export default {
         },
         //选择链接成功回调
         linkChoiceSuccess: function(opts){
+            var self = this
             this.linkChoice.showModal = false;
-            this.data.id = opts.id;
+            if(opts.type === "getTab"){
+                this.data.goodId = opts.tag_id
+                this.data.type = 0
+                this.data.title = opts.tag_name
+            } else {
+                this.data.goodId = opts.acid
+                this.data.type = 1
+                this.data.title = opts.cname
+            }
+            
             this.element.linkName = opts.name;
             this.linkChoice.selected = opts.link;//设置当前选择项
         },
@@ -208,10 +202,6 @@ export default {
         //选择颜色
         colorPickeronChange: function(type, val){
             this.data[type] = val.hex
-        },
-
-        getList: function(){
-            
         }
     }
 }
@@ -237,7 +227,7 @@ td{
 .color{
     width: 28px; height: 28px;
     border-radius: 2px;
-    position: relative;
+    position:relative;
 }
 .color-mask{
     width: 100%; height: 100%;
@@ -254,7 +244,7 @@ td{
     line-height: 30px;
     position: absolute;
     bottom: -230px; right: -195px;
-    z-index: 2;
+    z-index: 95;
     cursor: pointer;
 }
 .closeColorPicker:hover{
@@ -275,7 +265,7 @@ td{
 .color-picker{
     position: absolute;
     top: 30px; left: 0;
-    z-index: 1;
+    z-index:90;
 }
 .tips{
     color: #999;

@@ -148,7 +148,7 @@ export default {
     z-index: 0;
     left: 50%;
     top: 50%;
-    margin: -380px 0 0 -270px;
+    margin: -250px 0 0 -270px;
     background: url(../assets/images/phone.svg) no-repeat 0 0;
 }
 .phone-content{

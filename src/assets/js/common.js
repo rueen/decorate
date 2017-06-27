@@ -10,10 +10,11 @@ export default {
 	ajax: function(opts){
         //显示loading
         bus.$emit('setLoading', {isShow: true});
+
 		$.ajax({
             url: opts.url,
             type: opts.type || 'POST',
-            cache: opts.cache,
+            cache: opts.cache, //缓存
             dataType: opts.dataType || 'JSON',
             data: opts.data,
             timeout: opts.timeout || 60000,
@@ -26,7 +27,6 @@ export default {
                 // console.log(resp)
             },
             success: function(resp){
-                console.log(resp)
                 var _resp = (typeof resp == 'string') ? $.parseJSON(resp) : resp;
                 
                 if(typeof _resp.result != 'undefined' && _resp.result != 1){

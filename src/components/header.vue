@@ -5,7 +5,7 @@
 
 <template>
     <div class="header-wrap clearfix">
-        <a href="back" class="fl btn-red btn-back"><span class="iconfont icon-arrow-left"></span>返回</a>
+        <!--<a href="back" class="fl btn-red btn-back"><span class="iconfont icon-arrow-left"></span>返回</a>
         <div class="fl btn-preview" @click="showQrcode" v-if="qrcode.src">
             查看页面
         </div>
@@ -13,10 +13,12 @@
             <span class="iconfont icon-doubt"></span>
             教程
         </div>
+                -->
         <button class="fr btn-save btn-red" @click="saveClick">
             <span class="iconfont icon-save"></span>
             发布
         </button>
+
         <div class="fr btn-clear" @click="clearData">
             <span class="iconfont icon-clear"></span>
             清空
@@ -32,7 +34,7 @@
         <!-- 清空数据确认框 -->
         <modal v-if="clear.showModal" :modalOptions="clear.modalOptions" @close="closeClearModal" @ok="okClearModal"></modal>
         <!-- 保存数据确认框 -->
-        <save-modal v-if="save.showModal" :saveOptions="save.saveOptions" @close="closeSaveModal" @ok="okSaveModal"></save-modal>
+        <save-modal v-if="save.showModal" :saveOptions="save.saveOptions" @close="closeSaveModal" @ok="okSaveModal" :saveState="save.state"></save-modal>
         <!-- <modal v-if="save.showModal" :modalOptions="save.modalOptions" @close="closeSaveModal" @ok="okSaveModal">
             <div slot="body">
                 <p>页面名称</p>
@@ -101,6 +103,7 @@ export default {
             //保存
             save: {
                 showModal: false,
+                state: location.search.indexOf('decorationId') > 0,
                 saveOptions: {
                     pageName: decoration.name,
                     shareData: bus.shareData
@@ -137,14 +140,13 @@ export default {
                     goodsIds: '',
                     shareData: '',
                 }, decoration);
-
+            
             _data.content = common.filter(JSON.stringify(bus.list));
-            _data.name = data.pageName;
+            _data.page_title = data.pageName;
             _data.shareData = common.filter(JSON.stringify(data.shareData));
-
-            console.log(JSON.stringify(_data))
+            _data.url = data.url
             this.save.showModal = false;
-
+            isDev = false
             if(isDev){
                 //本地调试
                 localStorage.set('pageData', common.filter(JSON.stringify(bus.list)));
@@ -152,8 +154,8 @@ export default {
                 that.showTips = true;
             } else {
                 //正式环境
-                service.save({
-                    data: _data,
+                service.saveDecoration({
+                    data:_data ,
                     success: function(resp){
                         that.showTips = true;
                     },

@@ -46,31 +46,79 @@ var decoration = decorations ? decorations : {};
 
 //左侧组件标签
 var tags = [
-    {
-        category: '图文类',
-        list: [
-        // {
-        //     name: '多图轮播',
-        //     type: 'slideBox',
-        //     max: 1,
-        //     tips: '也称幻灯片，可以选择多张图片（直接输入链接或上传），将在首页自动切换轮播'
-        // },
-        {
-            name: '焦点图',
-            type: 'singlePic',
-            max: null,
-            tips: '一般选择一张宣传热图，或者可以一张装饰性图片，如果是纯装饰性的，可以不要文字和连接'
-        }]
+{
+    category: '图文类',
+    list: [{
+        name: '多图轮播',
+        type: 'slideBox',
+        max: 1,
+        tips: '也称幻灯片，可以选择多张图片（直接输入链接或上传），将在首页自动切换轮播'
     },
     {
-        category: '标签列表',
-        list: [{
-            name: '双列',
-            type: 'doubleRow',
-            max: null,
-            tips: '标签的双排列方式'
-        }]
-    },
+        name: '焦点图',
+        type: 'singlePic',
+        max: null,
+        tips: '一般选择一张宣传热图，或者可以一张装饰性图片，如果是纯装饰性的，可以不要文字和连接'
+    }]
+},
+// {
+//     category: '区域类',
+//     list: [{
+//         name: '新分类',
+//         type: 'categories',
+//         max: null,
+//         tips: ''
+//     },
+//     {
+//         name: '顶部分类',
+//         type: 'categoriesBar',
+//         max: 1,
+//         tips: '列出宝贝的几大类，供顾客挑选'
+//     }]
+// },
+{
+    category: '标签列表',
+    list: [
+    // {
+    //     name: '单列',
+    //     type: 'singleRow',
+    //     max: null,
+    //     tips: '商品或者标签的单排列方式'
+    // },
+    {
+        name: '双列',
+        type: 'doubleRow',
+        max: null,
+        tips: '标签的双排列方式'
+    }]
+},
+// {
+//     category: '营销类',
+//     list: [{
+//         name: '团购',
+//         type: 'tuan',
+//         max: 1,
+//         tips: ''
+//     },
+//     {
+//         name: '今日上新',
+//         type: 'today',
+//         max: 1,
+//         tips: ''
+//     },
+//     {
+//         name: '大师推荐',
+//         type: 'recommended2',
+//         max: 1,
+//         tips: ''
+//     },
+//     {
+//         name: '商品列表',
+//         type: 'goodsList',
+//         max: null,
+//         tips: ''
+//     }]
+// }
 ];
 
 //默认数据
