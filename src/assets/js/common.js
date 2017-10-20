@@ -20,15 +20,15 @@ export default {
             timeout: opts.timeout || 60000,
             processData: opts.processData || false,
             contentType: opts.contentType || false,
-            beforeSend: function(){
+            xhrFields: {withCredentials: true},
 
-            },
+
             complete: function(resp){
                 // console.log(resp)
             },
             success: function(resp){
                 var _resp = (typeof resp == 'string') ? $.parseJSON(resp) : resp;
-                
+
                 if(typeof _resp.result != 'undefined' && _resp.result != 1){
                     //失败回调
                     opts.fail && opts.fail(_resp);

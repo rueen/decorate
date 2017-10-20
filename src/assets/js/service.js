@@ -86,7 +86,7 @@ export default {
 
 			common.ajax(opt)
 		},
-		
+
 	},
 	//图片上传
 	upload: function(opts){

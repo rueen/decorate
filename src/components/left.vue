@@ -1,4 +1,4 @@
-<!-- 
+<!--
   左边组件标签栏
   李瑞云 2016.12.01
  -->
@@ -61,11 +61,11 @@ module.exports = {
         }
     },
     created: function(){
-
+        console.log(this.list)
     },
     components: { tips, draggable },
     computed: {
-        
+
     },
     methods: {
         //拖拽创建元素
@@ -90,7 +90,7 @@ module.exports = {
                 newData = $.extend(true, {}, defaultElement[type]),
                 curIndex = this.list.length,
                 _length = 0;
-                
+
             bus.$emit('setCurrentIndex', {index: curIndex});
 
             $.each(this.list, function(index, json){
