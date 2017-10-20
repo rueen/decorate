@@ -14,6 +14,9 @@ export default {
 		$.ajax({
             url: opts.url,
             type: opts.type || 'POST',
+            xhrFields: {
+                withCredentials: true
+            },
             cache: opts.cache, //缓存
             dataType: opts.dataType || 'JSON',
             data: opts.data,
