@@ -1,4 +1,4 @@
-<!-- 
+<!--
   图片选择弹出框
   李瑞云 2016.12.01
  -->
@@ -17,34 +17,16 @@
                     <input type="file" class="upload-btn" name="crop-up-img" accept="image/jpg,image/jpeg,image/png,image/gif" pictype="30010003" @change="upload">
                 </div>
             </div>
-            <!-- <div class="content fr" v-show="imageChoice.curTab == 'library'">
-                <div class="wrap">
-                    <div class="list clearfix">
-                        <div class="item" @click="ok('http://store.test.seatent.com/img/decorate/hd-depot/000.jpg')">
-                            <img src="http://store.test.seatent.com/img/decorate/hd-depot/000.jpg" alt="" class="thumbnail">
-                        </div>
-                        <div class="item" @click="ok('http://store.test.seatent.com/img/decorate/hd-depot/001.jpg')">
-                            <img src="http://store.test.seatent.com/img/decorate/hd-depot/001.jpg" alt="" class="thumbnail">
-                        </div>
-                        <div class="item" @click="ok('http://store.test.seatent.com/img/decorate/hd-depot/002.jpg')">
-                            <img src="http://store.test.seatent.com/img/decorate/hd-depot/002.jpg" alt="" class="thumbnail">
-                        </div>
-                        <div class="item" @click="ok('http://store.test.seatent.com/img/decorate/hd-depot/003.jpg')">
-                            <img src="http://store.test.seatent.com/img/decorate/hd-depot/003.jpg" alt="" class="thumbnail">
-                        </div>
-                    </div>
-                </div>
-            </div> -->
             <div class="content fr popUp-upload-content" v-show="imageChoice.curTab == 'upload'">
                 <div class="content-wrap">
-                    <div class="add" v-if="userImages.all.length == 0">
+                    <div class="add" v-if="imgList.length == 0">
                         <span class="iconfont icon-upload"></span>
                         <input type="file" class="upload-btn" name="crop-up-img" accept="image/jpg,image/jpeg,image/png,image/gif" pictype="30010003" @change="upload">
                     </div>
-                    <div class="wrap" v-if="userImages.all.length > 0">
+                    <div class="wrap" v-if="imgList.length > 0">
                         <div class="list clearfix">
-                            <div class="img-item selected-box-wrap" :class="{'selected': selected == item}" v-for="item in userImages.cur" @click="ok(item)">
-                                <img :src="item" alt="" class="thumbnail">
+                            <div class="img-item selected-box-wrap" :class="{'selected': selected == item}" v-for="item in imgList" @click="ok(item.url)">
+                                <img :src="item.url" alt="" class="thumbnail">
                                 <div class="selected-box">
                                     <span class="iconfont icon-select"></span>
                                 </div>
@@ -52,9 +34,9 @@
                         </div>
                     </div>
                 </div>
-                <pagination 
-                :pageNum="userImages.pageNum"
-                :count="userImages.count"
+                <pagination
+                :pageNum="page"
+                :count="count"
                 @goPage="goPage"></pagination>
             </div>
         </div>
@@ -69,16 +51,10 @@ import {info} from '../../config.js'
 import service from '../../assets/js/service.js'
 import pagination from './pagination'
 
-var images = !!localStorage.get('userImages') ? localStorage.get('userImages').split(',') : [],
-    pageNum = 1,
-    pageSize = 6,
-    cur = images.length >= pageSize ? images.slice(0, pageSize) : images,
-    count = Math.ceil(images.length / pageSize);
 
 export default {
     data() {
         var opts = this.modalOptions;
-
 	    return {
             selected: opts.selected,
 	        imageChoice: {
@@ -89,51 +65,47 @@ export default {
                 },
                 curTab: opts.curTab || 'library', //当前选项卡
             },
-            userImages: {
-                all: images,//本地缓存‘我的图片’
-                pageNum: pageNum,
-                cur: cur,
-                count: count
-            },
+          page:1,
+          rows:6,
+          count:'',
+          imgList:[]
 	    };
 	},
     props: ['modalOptions'],
     computed: {
 
     },
-    watch: {
-        'userImages.all': {
-            handler: function(val){
-                var images = val,
-                    cur = images.length >= pageSize ? images.slice(0, pageSize) : images,
-                    count = Math.ceil(images.length / pageSize);
 
-                this.userImages.cur = cur;//重置当前页数据列表
-                this.userImages.count = count;//重置页码
-            },
-            deep:true
-        }
-    },
     created: function(){
-        console.log(this.userImages)
+
     },
 	components: {
         modal, pagination
     },
+  mounted:function (  ) {
+    this.getImgList();
+  },
 	methods: {
+      //获取图片列表
+       getImgList:function () {
+         var that = this;
+         service.getImgList({
+           page: this.page,
+           rows: this.rows,
+           success: function(resp){
+             that.count = Math.ceil(resp.total/6);
+             that.imgList = resp.rows;
+           },
+         })
+       },
         //模拟分页
         goPage: function(opt){
-            var images = this.userImages.all,
-                _pageNum = opt.pageNum,
-                cur = images.length > (pageSize * _pageNum) ? images.slice(pageSize * (_pageNum - 1), pageSize * _pageNum) : images.slice(pageSize * (_pageNum - 1));
-
-            this.userImages.pageNum = opt.pageNum;//重置当前页码
-            this.userImages.cur = cur//重置当前页数据列表
+         this.page = opt.pageNum;
+         this.getImgList();
         },
 		//切换图片选择弹窗选项卡
         changeImageChoiceTab: function(type){
             var that = this;
-
             this.imageChoice.curTab = type;
         },
         //上传图片
@@ -143,7 +115,6 @@ export default {
                 formData = new FormData(),
                 event = e,
                 i = files.length;
-
             while (i--) {
                 if (files[i].size > ( 1024 * 1024  * 1)) {
                     alert('单张图片大小不能超过1024k(1M),请压缩后重新上传');
@@ -153,7 +124,6 @@ export default {
                     formData.append('filedataFileName', event.target.value);
                 }
             }
-            
             service.upload({
                 cache: false,
                 data: formData,
@@ -161,17 +131,7 @@ export default {
                 processData: false,
                 contentType: false,
                 success: function(resp){
-                    // that.userImages.all = []
-                    if(!!resp.data){
-                        $.each(resp.data, function(index, url){
-                            if(url.indexOf('http') > -1){
-                                that.userImages.all.unshift(url);
-                            }
-                            
-                        })
-                        //更新本地缓存
-                        localStorage.set('userImages', that.userImages.all)
-                    }
+                  that.getImgList()
                 },
                 fail:function(resp){
                     alert(resp.message)

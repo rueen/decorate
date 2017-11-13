@@ -6,7 +6,8 @@
     <script>
 		var configs = configs || {};
 		var isDev = true;
-		configs.baseUrl = 'http://support.dev.seatent.com/';
+//		configs.baseUrl = 'http://supportapi.dev.seatent.com/';
+		configs.baseUrl = 'http://store.test.seatent.com';
     configs.shopId = 38;
     //签约状态
     configs.sign_status = 1;
@@ -16,7 +17,7 @@
     decorations.shopId = 38;
     decorations.content = isDev ? window.localStorage['pageData'] : '[]';
     decorations.shareData = isDev ? window.localStorage['shareData'] : '{}';
-  
+
 	</script>
   </head>
   <body>

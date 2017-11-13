@@ -1,0 +1,39 @@
+.f0{
+  font-size: 10px;
+}
+.f1{
+  font-size: 11px;
+}
+.f2{
+  font-size: 12px;
+}
+.f3{
+  font-size: 13px;
+}
+.f4{
+  font-size: 14px;
+}
+.f5{
+  font-size: 15px;
+}
+.f6{
+  font-size: 16px;
+}
+.f7{
+  font-size: 17px;
+}
+.f8{
+  font-size: 18px;
+}
+.gray{
+  color: #999999;
+}
+.timeColor{
+  color:#ff0032;
+}
+.printCol{
+  color: #ff0033;
+}
+.btnColor{
+  background: #FF0033;
+}

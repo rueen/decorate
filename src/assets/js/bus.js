@@ -46,7 +46,6 @@ var bus = new Vue({
     methods: {
         clearList: function() {
             var len = this.list.length;
-
             this.list.splice(0, len);
         },
         //设置loading

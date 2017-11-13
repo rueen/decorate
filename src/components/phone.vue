@@ -1,4 +1,4 @@
-<!-- 
+<!--
   中间手机框
   李瑞云 2016.12.01
  -->
@@ -26,7 +26,7 @@
                         </div>
                         </template>
                     </div>
-                    
+
                     <component :is="element.name" :data="element.data" :element="element"></component>
                 </div>
             </draggable>
@@ -86,7 +86,7 @@ export default {
             var newIndex = evt.newIndex;
             bus.$emit('setCurrentIndex', {index: newIndex});
             this.curIndex = newIndex;
-           
+
         },
         //点击元素调出右侧编辑框
         edit: function(e, index, element){
@@ -155,7 +155,7 @@ export default {
     width: 320px;
     height: 500px;
     margin: 0 auto;
-    background: #fff;
+    background: #f2f2f2;
     overflow-y: auto;
 }
 .dragArea{

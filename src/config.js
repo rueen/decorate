@@ -6,6 +6,21 @@
 import $ from 'jquery'
 import singlePicPreview from './components/parts/singlePic/preview'
 import singlePicEdit from './components/parts/singlePic/edit'
+//限时抢购
+import timeLimitPreview from './components/parts/timeLimit/preview.vue'
+import timeLimitEdit from './components/parts/timeLimit/edit.vue'
+//满减送
+import fullSubtractPreview from './components/parts/fullSubtract/preview.vue'
+import fullSubtractEdit from './components/parts/fullSubtract/edit.vue'
+//商品分组
+import goodsGroupPreview from './components/parts/goodsGroup/preview.vue'
+import goodsGroupEdit from './components/parts/goodsGroup/edit.vue'
+//标题
+import titleTextPreview from './components/parts/title/preview.vue'
+import titleTextEdit from './components/parts/title/edit.vue'
+//优惠券
+import couponPreview from './components/parts/coupon/preview.vue'
+import couponEdit from './components/parts/coupon/edit.vue'
 //轮播图
 import slideBoxPreview from './components/parts/slideBox/preview'
 import slideBoxEdit from './components/parts/slideBox/edit'
@@ -60,16 +75,49 @@ var tags = [
             type: 'singlePic',
             max: null,
             tips: '一般选择一张宣传热图，或者可以一张装饰性图片，如果是纯装饰性的，可以不要文字和连接'
-        }]
-    },
-    {
-        category: '标签列表',
-        list: [{
-            name: '双列',
-            type: 'doubleRow',
+        },{
+            name: '标题',
+            type: 'titleText',
             max: null,
-            tips: '标签的双排列方式'
-        }]
+            tips: '标题有默认样式和自定义样式'
+          }
+        ]
+    },
+    // {
+    //     category: '标签列表',
+    //     list: [{
+    //         name: '双列',
+    //         type: 'doubleRow',
+    //         max: null,
+    //         tips: '标签的双排列方式'
+    //     }]
+    // },
+  {
+        category: '营销类',
+        list: [{
+            name: '限时抢购',
+            type: 'timeLimit',
+            max: null,
+            tips: '抢购类'
+        },
+          {
+            name: '满减送',
+            type: 'fullSubtract',
+            max: null,
+            tips: '抢购类'
+          }, {
+            name: '商品分组',
+            type: 'goodsGroup',
+            max: null,
+            tips: '抢购类'
+          },
+          // {
+          //   name: '优惠券',
+          //   type: 'coupon',
+          //   max: null,
+          //   tips: '优惠活动，钱钱钱！！！'
+          // }
+        ]
     },
 ];
 
@@ -78,17 +126,24 @@ var defaultElement = {
     //焦点图
     singlePic: {
         name: 'singlePic',
-        data: {
-            'imgsrc': 'http://img.seatent.com/statics/action/ac20170531/ac201530_tor_banner3.jpg',
-            'href': ''
+        data:{
+          column:'1',
+          list:[
+            {
+              'imgsrc': 'http://img.seatent.com/statics/action/ac20170531/ac201530_tor_banner3.jpg',
+              'href': 'http://www.baidu.com'
+            }
+          ]
         }
+
+
     },
     //多图轮播
     slideBox: {
         name: 'slideBox',
-        data: [{ 
+        data: [{
             'imgsrc': 'http://store.test.seatent.com/img/decorate/hd-depot/000.jpg',
-            'href': '' 
+            'href': ''
         }]
     },
     //新分类
@@ -105,7 +160,7 @@ var defaultElement = {
     //顶部分类
     categoriesBar: {
         name: 'categoriesBar',
-        data: [{ 
+        data: [{
             'title': '首页',
             'href': ''
         }]
@@ -165,8 +220,98 @@ var defaultElement = {
             type:"0",
             list:[]
         }
+    },
+  //限时抢购
+  timeLimit:{
+      name:"timeLimit",
+      data:{
+        column:'1',
+        activityId:"",
+        bgColor:'white',
+        bgImage:'',
+        borderColor:'gainsboro',
+        printColor:"999999",
+        btnBgColor:'red',
+        btnTextColor:'#ffffff',
+        printLabel:'价格',
+        picked:'one',
+        isShowBtn:true,
+        isShowOriginalPrice:true,
+        isShowlife:true,
+        isShowBuyNum:true,
+        isShowEnableStore:true,
+        isShowTime:true,
+        isShowLabel:false
     }
-}
+  },
+  //满减送
+  fullSubtract:{
+    name:"fullSubtract",
+    data:{
+      column:'1',
+      activityId:"",
+      bgColor:'white',
+      btnBgColor:'red',
+      btnTextColor:'#ffffff',
+      bgImage:'',
+      borderColor:'gainsboro',
+      picked:'one',
+      printColor:"#000",
+      printLabel:'价格',
+      isShowBtn:true,
+      isShowOriginalPrice:true,
+      isShowlife:true,
+      isShowActive:true
+    }
+  },
+  //商品分组
+  goodsGroup:{
+    name:"goodsGroup",
+    data:{
+      column:'1',
+      groupId:"",
+      bgColor:'white',
+      bgImage:'',
+      borderColor:'gainsboro',
+      btnBgColor:'red',
+      btnTextColor:'#ffffff',
+      picked:'one',
+      printColor:"#000",
+      printLabel:'价格',
+      isShowBtn:true,
+      isShowOriginalPrice:true,
+      isShowlife:true
+    }
+  },
+  //标题
+  titleText:{
+      name:"titleText",
+      data:{
+          titleName:'美妆销量王',
+          bgColor:'#4A3A3A',
+          fontColor:'#FFFFFF',
+          bgImage:''
+      }
+  },
+  //优惠券
+  coupon:{
+      name:'coupon',
+      data:{
+        line:"1",
+        isShowGet:'true',
+        list:[
+          {
+            id:'测试id',
+            bgColor:'#ffffff',
+            bgImage:'',
+            borderColor:'#dddddd',
+            printColor:'red',
+            textColor:"#9f9f9f"
+          }
+        ]
+      }
+  }
+};
 
 var componentsPreview = {
     singlePic: singlePicPreview,
@@ -178,7 +323,12 @@ var componentsPreview = {
     recommended2: recommended2Preview,
     goodsList: goodsListPreview,
     singleRow:singleRowPreview,
-    doubleRow:doubleRowPreview
+    doubleRow:doubleRowPreview,
+    timeLimit:timeLimitPreview,
+    fullSubtract:fullSubtractPreview,
+    goodsGroup:goodsGroupPreview,
+    titleText:titleTextPreview,
+    coupon:couponPreview
 };
 
 var componentsEdit = {
@@ -191,7 +341,12 @@ var componentsEdit = {
     recommended2: recommended2Edit,
     goodsList: goodsListEdit,
     singleRow:singleRowEdit,
-    doubleRow:doubleRowEdit
+    doubleRow:doubleRowEdit,
+    timeLimit:timeLimitEdit,
+    fullSubtract:fullSubtractEdit,
+    goodsGroup:goodsGroupEdit,
+    titleText:titleTextEdit,
+    coupon:couponEdit
 };
 
 var info = config;

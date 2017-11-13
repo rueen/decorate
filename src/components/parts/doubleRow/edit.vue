@@ -1,4 +1,4 @@
-<!-- 
+<!--
   商品列表——编辑
   李瑞云 2016.12.01
  -->
@@ -31,7 +31,7 @@
                 <td class="valign-m">
                     <button class="btn btn-default" @click="popup('bgImage')">背景图片</button>
                 </td>
-                
+
             </tr>
             <tr>
                 <td class="valign-m cell-left">标题:</td>
@@ -49,7 +49,7 @@
                     <button class="btn btn-default" @click="popup('titleBj')">标题图片</button>
                 </td>
             </tr>
-            
+
             <tr>
                 <td class="valign-m cell-left">边框:</td>
                 <td>
@@ -71,7 +71,7 @@
                 </td>
             </tr>
         </table>
-        <image-choice v-if="imageChoice.showModal" :modalOptions="imageChoice" @close="closeImageChoicePop" @ok="imageChoiceSuccess"></image-choice> 
+        <image-choice v-if="imageChoice.showModal" :modalOptions="imageChoice" @close="closeImageChoicePop" @ok="imageChoiceSuccess"></image-choice>
         <link-choice v-if="linkChoice.showModal" :modalOptions="linkChoice" @close="closeLinkChoicePop" @ok="linkChoiceSuccess"></link-choice>
     </div>
 </template>
@@ -130,10 +130,10 @@ export default {
     created: function(){
 
     },
-    components: { 
+    components: {
         imageChoice,
-        linkChoice, 
-        'color-picker': Chrome 
+        linkChoice,
+        'color-picker': Chrome
     },
     watch: {
         'data.id': {
@@ -152,7 +152,7 @@ export default {
     methods: {
         //换取弹窗
         popup(name){
-            this.name = name 
+            this.name = name
             this.imageChoice.showModal = true
         },
         //关闭图片选择弹窗
@@ -182,11 +182,11 @@ export default {
                 this.data.type = 0
                 this.data.title = opts.tag_name
             } else {
-                this.data.goodId = opts.acid
+//                this.data.goodId = opts.acid
                 this.data.type = 1
                 this.data.title = opts.cname
             }
-            
+
             this.element.linkName = opts.name;
             this.linkChoice.selected = opts.link;//设置当前选择项
         },

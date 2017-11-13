@@ -1,4 +1,4 @@
-<!-- 
+<!--
   头部操作区
   李瑞云 2016.12.01
  -->
@@ -106,7 +106,10 @@ export default {
                 state: location.search.indexOf('decorationId') > 0,
                 saveOptions: {
                     pageName: decoration.name,
-                    shareData: bus.shareData
+                    share_title:"",
+                    share_description:"",
+                    share_img:""
+                  //  shareData: bus.shareData
                 }
             },
             //签约认证
@@ -130,23 +133,28 @@ export default {
         },
         okSaveModal: function(data){
             var that = this,
-                _data = $.extend({
-                    id: '',
-                    isIndex: 0,
-                    name: '',
-                    shopId: '',
-                    shopName: '',
-                    content: '',
-                    goodsIds: '',
-                    shareData: '',
-                }, decoration);
-            
+              _data = {};
+//                _data = $.extend({
+//                    id: '',
+//                    isIndex: 0,
+//                    name: '',
+//                    shopId: '',
+//                    shopName: '',
+//                    content: '',
+//                    goodsIds: '',
+//                    shareData: '',
+//                });
+
             _data.content = common.filter(JSON.stringify(bus.list));
             _data.page_title = data.pageName;
-            _data.shareData = common.filter(JSON.stringify(data.shareData));
-            _data.url = data.url
+//            _data.shareData = common.filter(JSON.stringify(data.shareData));
+//            _data.url = data.url;
+            _data.share_title = data.share_title;
+            _data.share_description = data.share_description;
+            _data.share_img = data.share_img;
             this.save.showModal = false;
-            isDev = false
+            isDev = false;
+//            console.log(_data,'123456789');
             if(isDev){
                 //本地调试
                 localStorage.set('pageData', common.filter(JSON.stringify(bus.list)));

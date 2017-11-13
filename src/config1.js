@@ -4,35 +4,35 @@
 */
 //焦点图
 import $ from 'jquery'
-import singlePicPreview from './components/parts/singlePic/preview'
-import singlePicEdit from './components/parts/singlePic/edit'
+import singlePicPreview from './components/parts/singlePic/preview.vue'
+import singlePicEdit from './components/parts/singlePic/edit.vue'
 //轮播图
-import slideBoxPreview from './components/parts/slideBox/preview'
-import slideBoxEdit from './components/parts/slideBox/edit'
+import slideBoxPreview from './components/parts/slideBox/preview.vue'
+import slideBoxEdit from './components/parts/slideBox/edit.vue'
 //新分类
-import categoriesPreview from './components/parts/categories/preview'
-import categoriesEdit from './components/parts/categories/edit'
+import categoriesPreview from './components/parts/categories/preview.vue'
+import categoriesEdit from './components/parts/categories/edit.vue'
 //顶部分类
-import categoriesBarPreview from './components/parts/categoriesBar/preview'
-import categoriesBarEdit from './components/parts/categoriesBar/edit'
+import categoriesBarPreview from './components/parts/categoriesBar/preview.vue'
+import categoriesBarEdit from './components/parts/categoriesBar/edit.vue'
 //团购
-import tuanPreview from './components/parts/tuan/preview'
-import tuanEdit from './components/parts/tuan/edit'
+import tuanPreview from './components/parts/tuan/preview.vue'
+import tuanEdit from './components/parts/tuan/edit.vue'
 //今日上新
-import todayPreview from './components/parts/today/preview'
-import todayEdit from './components/parts/today/edit'
+import todayPreview from './components/parts/today/preview.vue'
+import todayEdit from './components/parts/today/edit.vue'
 //大师推荐
-import recommended2Preview from './components/parts/recommended2/preview'
-import recommended2Edit from './components/parts/recommended2/edit'
+import recommended2Preview from './components/parts/recommended2/preview.vue'
+import recommended2Edit from './components/parts/recommended2/edit.vue'
 //商品列表
-import goodsListPreview from './components/parts/goodsList/preview'
-import goodsListEdit from './components/parts/goodsList/edit'
+import goodsListPreview from './components/parts/goodsList/preview.vue'
+import goodsListEdit from './components/parts/goodsList/edit.vue'
 //标签单排
-import singleRowPreview from './components/parts/singleRow/preview'
-import singleRowEdit from './components/parts/singleRow/edit'
+import singleRowPreview from './components/parts/singleRow/preview.vue'
+import singleRowEdit from './components/parts/singleRow/edit.vue'
 //标签双排
-import doubleRowPreview from './components/parts/doubleRow/preview'
-import doubleRowEdit from './components/parts/doubleRow/edit'
+import doubleRowPreview from './components/parts/doubleRow/preview.vue'
+import doubleRowEdit from './components/parts/doubleRow/edit.vue'
 
 
 // 在此处添加组件
@@ -61,30 +61,30 @@ var tags = [
         tips: '一般选择一张宣传热图，或者可以一张装饰性图片，如果是纯装饰性的，可以不要文字和连接'
     }]
 },
-// {
-//     category: '区域类',
-//     list: [{
-//         name: '新分类',
-//         type: 'categories',
-//         max: null,
-//         tips: ''
-//     },
-//     {
-//         name: '顶部分类',
-//         type: 'categoriesBar',
-//         max: 1,
-//         tips: '列出宝贝的几大类，供顾客挑选'
-//     }]
-// },
+{
+    category: '区域类',
+    list: [{
+        name: '新分类',
+        type: 'categories',
+        max: null,
+        tips: ''
+    },
+    {
+        name: '顶部分类',
+        type: 'categoriesBar',
+        max: 1,
+        tips: '列出宝贝的几大类，供顾客挑选'
+    }]
+},
 {
     category: '标签列表',
     list: [
-    // {
-    //     name: '单列',
-    //     type: 'singleRow',
-    //     max: null,
-    //     tips: '商品或者标签的单排列方式'
-    // },
+    {
+        name: '单列',
+        type: 'singleRow',
+        max: null,
+        tips: '商品或者标签的单排列方式'
+    },
     {
         name: '双列',
         type: 'doubleRow',
@@ -92,33 +92,33 @@ var tags = [
         tips: '标签的双排列方式'
     }]
 },
-// {
-//     category: '营销类',
-//     list: [{
-//         name: '团购',
-//         type: 'tuan',
-//         max: 1,
-//         tips: ''
-//     },
-//     {
-//         name: '今日上新',
-//         type: 'today',
-//         max: 1,
-//         tips: ''
-//     },
-//     {
-//         name: '大师推荐',
-//         type: 'recommended2',
-//         max: 1,
-//         tips: ''
-//     },
-//     {
-//         name: '商品列表',
-//         type: 'goodsList',
-//         max: null,
-//         tips: ''
-//     }]
-// }
+{
+    category: '营销类',
+    list: [{
+        name: '团购',
+        type: 'tuan',
+        max: 1,
+        tips: ''
+    },
+    {
+        name: '今日上新',
+        type: 'today',
+        max: 1,
+        tips: ''
+    },
+    {
+        name: '大师推荐',
+        type: 'recommended2',
+        max: 1,
+        tips: ''
+    },
+    {
+        name: '商品列表',
+        type: 'goodsList',
+        max: null,
+        tips: ''
+    }]
+}
 ];
 
 //默认数据
@@ -134,9 +134,9 @@ var defaultElement = {
     //多图轮播
     slideBox: {
         name: 'slideBox',
-        data: [{ 
+        data: [{
             'imgsrc': 'http://store.test.seatent.com/img/decorate/hd-depot/000.jpg',
-            'href': '' 
+            'href': ''
         }]
     },
     //新分类
@@ -153,7 +153,7 @@ var defaultElement = {
     //顶部分类
     categoriesBar: {
         name: 'categoriesBar',
-        data: [{ 
+        data: [{
             'title': '首页',
             'href': ''
         }]

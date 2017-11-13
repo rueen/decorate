@@ -49,6 +49,63 @@ export default {
 
 			common.ajax(opt)
 		},
+    //获取商品分组商品详情
+    getGoodsGroupDetail:function (opts) {
+      var opt = $.extend({
+        url: info.baseUrl +'shop/admin/decoration!searchinggoods.do?&appkey=30664875' +'&groupId='+ opts.groupId,
+        type: 'GET',
+        cache:false
+      }, opts);
+      common.ajax(opt)
+    },
+    //获取商品详情
+    getGoodsDetail:function (opts) {
+      var opt = $.extend({
+        url: info.baseUrl +'shop/admin/decoration!searchinggoods.do?&appkey=30664875' +'&activityId='+ opts.activityId,
+        type: 'GET',
+        cache:false
+      }, opts);
+      common.ajax(opt)
+    },
+    //获取焦点图列表
+    singlePic:function (opts) {
+      var opt = $.extend({
+        url: info.baseUrl + 'shop/admin/decoration!listJson.do?rows='+opts.rows+'&page='+opts.page+'&activityName=' + opts.activityName,
+        type: 'GET',
+        cache:false
+      }, opts);
+      common.ajax(opt)
+    },
+    //获取商品分组标签列表
+    goodsGroup:function (opts) {
+      var opt = $.extend({
+        url: info.baseUrl + '/shop/admin/goodsgroup!listJson.do?rows='+opts.rows+'&page='+opts.page+'&tagName=' + opts.activityName,
+        type: 'GET',
+        cache:false
+      }, opts);
+
+      common.ajax(opt)
+    },
+    //获取满减送标签列表
+    fullSubtract:function (opts) {
+      var opt = $.extend({
+        url: info.baseUrl + '/shop/admin/operation_activity!listJson.do?activityType=6'+'&rows='+opts.rows+'&page='+opts.page+'&state='+opts.state+ '&activityName=' + opts.activityName,
+        type: 'get',
+        cache:false
+      }, opts);
+      console.log(opt);
+      common.ajax(opt)
+    },
+    //获取限时特卖标签列表
+    timeLimit:function (opts) {
+      var opt = $.extend({
+        url: info.baseUrl + '/shop/admin/operation_activity!listJson.do?activityType=5' + '&rows='+opts.rows+'&page='+opts.page+'&state='+opts.state+ '&activityName=' + opts.activityName,
+        type: 'GET',
+        cache:false
+      }, opts);
+
+      common.ajax(opt)
+    },
 		//获取标签列表
 		getTab: function(opts){
 			var opt = $.extend({
@@ -78,21 +135,21 @@ export default {
 
 			common.ajax(opt)
 		},
-		getDevDetails:function(opts){
-			var opt = $.extend({
-				url: info.baseUrl + '/core/admin/hdadv!listAdvByAcid.do?acid='+opts.goodId,
-				type: 'GET',
-			}, opts);
-
-			common.ajax(opt)
-		},
-		
 	},
+  //获取图片列表
+  getImgList:function (opts) {
+    var opt = $.extend({
+      url: info.baseUrl + '/shop/admin/decoration!showPic.do?page='+opts.page+'&rows='+opts.rows,
+      type: 'GET',
+      cache:false
+    }, opts);
+
+    common.ajax(opt)
+  },
 	//图片上传
 	upload: function(opts){
 		var opt = $.extend({
 			   url: info.baseUrl + '/shop/admin/decoration!upload.do',
-			//    url:"http://depot.dev.seatent.com/api/depot/goods!upload.do",
 			type: 'POST',
 		}, opts);
 
@@ -122,6 +179,7 @@ export default {
 	},
 	//提交模板数据
 	saveDecoration:function(opts){
+	  // console.log(opts);
 		var opt = $.extend({
 				url: info.baseUrl + '/shop/admin/decoration!saveDecoration.do',
 				contentType:'application/x-www-form-urlencoded'
