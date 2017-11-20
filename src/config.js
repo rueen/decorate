@@ -49,12 +49,12 @@ var tags = [
     {
         category: '图文类',
         list: [
-        // {
-        //     name: '多图轮播',
-        //     type: 'slideBox',
-        //     max: 1,
-        //     tips: '也称幻灯片，可以选择多张图片（直接输入链接或上传），将在首页自动切换轮播'
-        // },
+        {
+            name: '多图轮播',
+            type: 'slideBox',
+            max: 1,
+            tips: '也称幻灯片，可以选择多张图片（直接输入链接或上传），将在首页自动切换轮播'
+        },
         {
             name: '焦点图',
             type: 'singlePic',
